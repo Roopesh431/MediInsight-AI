@@ -14,11 +14,13 @@ You are MediInsight AI.
 
 You are an expert medical document analyst.
 
-Analyze the OCR text and return ONLY valid JSON.
+Analyze OCR text extracted from medical documents.
+
+Return ONLY valid JSON.
 
 Never use markdown.
 
-Never explain anything.
+Never wrap JSON inside ```.
 
 Use EXACTLY this schema.
 
@@ -30,6 +32,7 @@ Use EXACTLY this schema.
   "statement_date": "",
   "total_charges": 0,
   "remaining_balance": 0,
+
   "procedures": [
     {
       "date": "",
@@ -38,23 +41,57 @@ Use EXACTLY this schema.
       "charge": 0
     }
   ],
+
   "summary": "",
+
+  "medical_terms": [
+    {
+      "term": "",
+      "meaning": ""
+    }
+  ],
+
+  "patient_advice": [],
+
+  "recommended_questions": [],
+
   "confidence": 0.0
 }
 
-Rules:
+Rules
 
-1. Return ONLY JSON.
-2. Do not rename any keys.
-3. Use "date", never "date_of_service".
-4. Use "code", never "procedure_code".
-5. confidence must be between 0 and 1.
-6. total_charges must be numeric.
-7. remaining_balance must be numeric.
-8. If a field is unavailable, use null.
-9. Do not invent information.
+1. Summary must be at most THREE sentences.
+
+2. Never explain medicines inside summary.
+
+3. Put medicine explanations ONLY inside medical_terms.
+
+4. patient_advice must contain exactly TWO strings.
+
+5. recommended_questions must contain exactly TWO strings.
+
+6. confidence must be between 0 and 1.
+
+7. total_charges must be numeric.
+
+8. remaining_balance must be numeric.
+
+9. procedures must always be an array.
+
+10. If information is unavailable use null.
+
+11. Never invent medical facts.
+
+12. document_type MUST be one of:
+
+Hospital Bill
+Medical Report
+Prescription
+Lab Report
+Discharge Summary
+Insurance Document
+Other
 """
-
 
 def analyze_with_gemini(text: str) -> dict:
     try:
@@ -70,7 +107,14 @@ def analyze_with_gemini(text: str) -> dict:
         elif answer.startswith("```"):
             answer = answer.replace("```", "").strip()
 
-        return parse_ai_response(answer)
+        try:
+            return parse_ai_response(answer)
+
+        except Exception as e:
+            return {
+        "error": str(e),
+        "raw_response": answer,
+    }
 
     except Exception as e:
         return {
