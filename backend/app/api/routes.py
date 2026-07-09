@@ -6,6 +6,7 @@ from backend.app.services.upload_service import save_uploaded_file
 from backend.app.services.ocr_service import extract_text_from_pdf
 from backend.app.services.parser_service import extract_medical_information
 from backend.app.schemas.parser_response import ParserResponse
+from backend.app.ai.ai_interface import analyze_document as ai_analyze_document
 
 router = APIRouter()
 
@@ -30,7 +31,7 @@ def ocr_file(file: UploadFile = File(...)):
     )
 
 @router.post("/analyze", response_model=ParserResponse)
-def analyze_document(file: UploadFile = File(...)):
+def analyze_bill(file: UploadFile = File(...)):
 
     upload_result = save_uploaded_file(file)
 
@@ -41,3 +42,14 @@ def analyze_document(file: UploadFile = File(...)):
     data = extract_medical_information(text)
 
     return ParserResponse(**data)
+
+@router.post("/ai-analyze")
+def ai_analyze(file: UploadFile = File(...)):
+
+    upload = save_uploaded_file(file)
+
+    text = extract_text_from_pdf(
+        f"backend/uploads/{upload.saved_filename}"
+    )
+
+    return ai_analyze_document(text)
