@@ -114,6 +114,8 @@ MediInsight-AI
 | POST | `/ocr` | OCR text extraction |
 | POST | `/analyze` | Structured medical bill extraction |
 
+<img width="1842" height="932" alt="image" src="https://github.com/user-attachments/assets/b2a5f08f-b984-42e2-bd2e-5f11476371c8" />
+
 ---
 
 # 🛣 Roadmap
