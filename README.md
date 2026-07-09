@@ -34,7 +34,19 @@ An AI-powered platform for intelligent medical report and hospital bill analysis
 
 ## Project Status
 
-🚧 Currently under development.
+Project Status
+
+## ✅ Completed
+
+- Repository Setup
+- Backend Initialization
+- FastAPI Server
+- Health Check API
+- Swagger Documentation
+
+## 🚧 In Progress
+
+- File Upload API
 
 ## Roadmap
 
