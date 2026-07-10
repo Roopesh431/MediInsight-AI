@@ -1,48 +1,136 @@
 # 🏥 MediInsight AI
 
-An AI-powered medical document analysis platform that extracts, structures, and analyzes information from hospital bills and medical reports using OCR and Artificial Intelligence.
+An AI-powered medical document analysis platform that helps patients understand hospital bills and medical reports using OCR, Natural Language Processing, and Large Language Models.
 
 ---
 
-# 🚀 Current Features
+## 📌 Overview
 
-### ✅ Backend
-- FastAPI REST API
-- Modular project architecture
-- Interactive Swagger documentation
-- Health check endpoint
+MediInsight AI extracts text from uploaded medical PDFs, analyzes the document using AI, explains medical terminology in simple language, and allows users to ask questions about their medical documents through an intelligent chatbot.
 
-### ✅ Secure PDF Upload
-- PDF upload API
-- UUID-based file naming
-- SHA-256 document hashing
-- File extension validation
-- File size validation
-- PDF signature verification
-
-### ✅ OCR Pipeline
-- PDF to image conversion (Poppler)
-- Text extraction using Tesseract OCR
-- Multi-page PDF support
-
-### ✅ Medical Information Extraction
-- Patient information extraction
-- Provider information extraction
-- Statement date extraction
-- Visit balance extraction
-- Total charge extraction
-- Procedure extraction (Initial Version)
+The project is built with a modular backend architecture using FastAPI and is designed to be extended with a modern React frontend.
 
 ---
 
-# 🚧 Currently In Development
+# ✨ Features
 
-- AI-powered medical bill understanding
-- LLM-based structured data extraction
-- Medical report summarization
-- Billing anomaly detection
-- Insurance claim assistance
-- Interactive dashboard
+## 📄 Document Upload
+
+- Upload PDF medical reports
+- Upload hospital bills
+- Automatic document storage
+- SHA-256 integrity hash generation
+
+---
+
+## 🔍 OCR
+
+- Extract text from scanned PDFs
+- OCR text stored for future reuse
+- Avoids re-uploading documents
+
+---
+
+## 📊 Rule-Based Analysis
+
+Automatically extracts:
+
+- Patient Name
+- Hospital
+- Doctor
+- Statement Date
+- Visit Balance
+- Total Charges
+- Medical Procedures
+
+---
+
+## 🤖 AI Analysis
+
+Powered by **Google Gemini**.
+
+Provides:
+
+- Medical summary
+- Medical term explanations
+- Patient-friendly advice
+- Suggested questions to ask doctors
+- Confidence score
+- Structured JSON output
+
+---
+
+## 💬 AI Chat
+
+Users can ask questions such as:
+
+- Why is my balance so high?
+- What is Ciprofloxacin IV?
+- What does CPT Code 99215 mean?
+- What should I ask my doctor?
+
+The chatbot answers using the OCR text extracted from the uploaded document.
+
+---
+
+## 📁 Document Management
+
+- Upload documents
+- View uploaded documents
+- Process OCR
+- Run AI Analysis
+- Delete documents
+- SQLite metadata storage
+
+---
+
+# 🏗 Backend Architecture
+
+```
+Client
+   │
+   ▼
+FastAPI API
+   │
+   ├── Upload Routes
+   ├── Document Routes
+   ├── Processing Routes
+   └── AI Routes
+           │
+           ▼
+      Service Layer
+           │
+           ▼
+      AI Integration
+      OCR Engine
+      Parser
+      Chat
+           │
+           ▼
+      SQLite Database
+```
+
+---
+
+# 📂 Project Structure
+
+```
+backend/
+│
+├── app/
+│   ├── ai/
+│   ├── api/
+│   ├── database/
+│   ├── schemas/
+│   ├── services/
+│   ├── utils/
+│   └── main.py
+│
+├── uploads/
+├── extracted_text/
+├── config.py
+└── requirements.txt
+```
 
 ---
 
@@ -52,112 +140,147 @@ An AI-powered medical document analysis platform that extracts, structures, and 
 
 - Python
 - FastAPI
-- Pydantic
-- Uvicorn
-
-## OCR
-
-- Tesseract OCR
-- Poppler
-- pdf2image
-- Pillow
-
-## AI (Upcoming)
-
-- Google Gemini
-- Hugging Face Transformers
-- SentenceTransformers
-
-## Frontend (Upcoming)
-
-- React
-- Tailwind CSS
-
-## Database (Upcoming)
-
+- SQLAlchemy
 - SQLite
-- PostgreSQL
+- Pydantic
+
+## AI
+
+- Google Gemini API
+- PaddleOCR
+
+## Utilities
+
+- UUID
+- SHA-256
+- pathlib
 
 ---
 
-# 📂 Project Architecture
-
-```
-MediInsight-AI
-│
-├── backend
-│   ├── app
-│   │   ├── api
-│   │   ├── schemas
-│   │   ├── services
-│   │   ├── utils
-│   │   ├── models
-│   │   ├── database
-│   │   └── main.py
-│   │
-│   └── uploads
-│
-├── frontend
-│
-└── README.md
-```
-
----
-
-# 📌 Implemented API Endpoints
+# 📌 Available APIs
 
 | Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | `/` | Welcome endpoint |
-| GET | `/health` | Health check |
-| POST | `/upload` | Secure PDF upload |
-| POST | `/ocr` | OCR text extraction |
-| POST | `/analyze` | Structured medical bill extraction |
-
-<img width="1842" height="932" alt="image" src="https://github.com/user-attachments/assets/b2a5f08f-b984-42e2-bd2e-5f11476371c8" />
+|----------|------------------------------|-----------------------------|
+| POST | `/documents` | Upload PDF |
+| GET | `/documents` | List uploaded documents |
+| GET | `/documents/{id}` | Document details |
+| DELETE | `/documents/{id}` | Delete document |
+| POST | `/documents/{id}/ocr` | Extract OCR |
+| POST | `/documents/{id}/analyze` | Rule-based analysis |
+| POST | `/documents/{id}/ai-analyze` | AI analysis |
+| POST | `/documents/{id}/chat` | Chat with document |
 
 ---
 
-# 🛣 Roadmap
+# 📊 Current Status
 
-## ✅ Phase 1
+## ✅ Completed
 
-- Repository setup
-- Backend architecture
-- Secure PDF upload
-- OCR pipeline
-- Medical bill parser
+- Backend Architecture
+- Modular API Design
+- PDF Upload
+- OCR
+- Rule-Based Parser
+- Gemini AI Integration
+- AI Chat
+- SQLite Database
+- Document Management
+- Swagger Documentation
 
-## 🚧 Phase 2
+---
 
-- AI-powered structured extraction
-- Hospital bill understanding
-- Medical report understanding
-- Billing explanation
+## 🚧 In Progress
 
-## ⏳ Phase 3
-
-- Medical chatbot
-- RAG implementation
-- Interactive dashboard
+- React Frontend
+- Dashboard
 - Authentication
-- Database integration
-
-## ⏳ Phase 4
-
-- Docker deployment
-- Cloud deployment
-- CI/CD
-- Monitoring
+- Docker Support
 
 ---
 
-# 🎯 Project Goal
+## 📅 Planned
 
-MediInsight AI aims to simplify the understanding of hospital bills and medical reports by combining OCR, Artificial Intelligence, and Large Language Models into a single intelligent document analysis platform.
+- User Accounts
+- RAG
+- Vector Database
+- Medical Report Comparison
+- Export AI Analysis
+- Cloud Deployment
+
+---
+
+# 🚀 Running Locally
+
+```bash
+git clone https://github.com/Roopesh431/MediInsight-AI.git
+
+cd MediInsight-AI
+
+python -m venv .venv
+
+source .venv/bin/activate
+```
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Create
+
+```
+backend/.env
+```
+
+```env
+GEMINI_API_KEY=YOUR_API_KEY
+```
+
+Run
+
+```bash
+uvicorn backend.app.main:app --reload
+```
+
+Open
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+# 📈 Development Progress
+
+```
+Backend        ████████████████████ 100%
+
+Frontend       ░░░░░░░░░░░░░░░░░░░░   0%
+
+Authentication ░░░░░░░░░░░░░░░░░░░░
+
+Deployment     ░░░░░░░░░░░░░░░░░░░░
+```
 
 ---
 
 # 👨‍💻 Author
 
 **Lingam Roopesh**
+
+B.Tech — Internet of Things
+
+Passionate about AI, Embedded Systems, IoT, and Healthcare Technology.
+
+---
+
+# ⭐ Future Vision
+
+MediInsight AI aims to become an intelligent healthcare assistant capable of:
+
+- Understanding medical reports
+- Explaining complex terminology
+- Assisting patients with billing
+- Comparing historical reports
+- Answering medical document questions using Retrieval-Augmented Generation (RAG)
