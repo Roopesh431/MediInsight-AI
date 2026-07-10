@@ -1,0 +1,58 @@
+MAYO 200 First Street SW
+CLINIC Rochester, MN 55905
+
+WY
+
+If you have any questions about your
+account, please call: 1-844-217-9591
+
+P]Addressee |
+
+Jane Doe
+1234 Edgewood Lane
+ALBERT LEA MN 56007
+
+Patient Name Visit ID
+
+Jane Doe 1000343247
+
+Professional Charges
+
+Patient Online Services
+Go to www.mayoclinic.org/onlineservices to
+make payments and manage your account.
+
+Patient Name Visit ID
+Jane Doe 1000343247
+
+Guarantor ID: 29708
+
+Statement Date: 01/15/25
+Provider: Ulrich, Michael D, M.D.
+Location: MCHS MN Albert Lea Clinic
+
+This is not a bill. This is an itemization of services
+for account 1000343247 for patient Jane Doe.
+
+Dates of Service Visit Balance
+07/03/24 - 07/03/24 $538.56
+
+Date of _ NDC Code Procedure Procedure Description Dx Code Rev Qty Charge Amt
+Service Code Code
+07/03/2024 99215 99215 Established Patient Office or Other 261 1 $462.00
+Outpatient Visit With High Level of Medical
+Decision Making, if Using Time, 40 Minutes or
+More
+07/03/2024 296165 J0744 [Ciprofloxacin IV 110 334 1 $150.00
+Total professional charges: $612.00
+Professional Payments and Adjustments
+Date Description Amount
+07/08/24 —_|Self-Pay Discount -$55.44
+07/30/24 __|Self-Pay Discount -$18.00
+Total professional payments and adjustments: -$73.44
+
+©2021 Mayo Foundation for Medical Education and Research
+
+Visit Balance: $538.56
+
+Page 1 of 1

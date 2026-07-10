@@ -24,3 +24,5 @@ class Document(Base):
     confidence = Column(Float)
 
     status = Column(String)
+    
+    ocr_text_path = Column(String)
