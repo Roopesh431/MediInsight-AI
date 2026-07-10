@@ -1,29 +1,48 @@
+# -------------------------
 # Python
-__pycache__/
-*.pyc
+# -------------------------
 .venv/
-
-backend/.env
-.env
 __pycache__/
 *.pyc
+*.pyo
 
-# VS Code
-.vscode/
-
-# Node
-node_modules/
-
+# -------------------------
 # Environment
+# -------------------------
 .env
+backend/.env
 
+# -------------------------
+# Database
+# -------------------------
+*.db
+
+# -------------------------
 # Uploaded Files
+# -------------------------
 backend/uploads/
+backend/extracted_text/
 
+# -------------------------
+# Node
+# -------------------------
+node_modules/
+frontend/node_modules/
+
+# -------------------------
 # Build
+# -------------------------
 dist/
 build/
+frontend/dist/
 
+# -------------------------
+# VS Code
+# -------------------------
+.vscode/
+
+# -------------------------
 # OS
+# -------------------------
 .DS_Store
 Thumbs.db
