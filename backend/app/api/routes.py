@@ -7,6 +7,10 @@ from backend.app.services.ocr_service import extract_text_from_pdf
 from backend.app.services.parser_service import extract_medical_information
 from backend.app.schemas.parser_response import ParserResponse
 from backend.app.ai.ai_interface import analyze_document as ai_analyze_document
+from backend.app.ai.chat_service import chat_with_document
+from backend.app.schemas.chat import ChatRequest
+from backend.app.schemas.chat import ChatResponse
+from backend.app.utils.text_storage import save_text
 
 router = APIRouter()
 
@@ -23,6 +27,10 @@ def ocr_file(file: UploadFile = File(...)):
 
     text = extract_text_from_pdf(
         f"backend/uploads/{upload_result.saved_filename}"
+    )
+    save_text(
+    upload_result.document_id,
+    text,
     )
 
     return OCRResponse(
@@ -53,3 +61,15 @@ def ai_analyze(file: UploadFile = File(...)):
     )
 
     return ai_analyze_document(text)
+
+@router.post("/chat", response_model=ChatResponse)
+def chat(request: ChatRequest):
+
+    answer = chat_with_document(
+        request.document_id,
+        request.question,
+    )
+
+    return ChatResponse(
+        answer=answer
+    )
