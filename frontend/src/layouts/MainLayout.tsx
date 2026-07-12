@@ -1,17 +1,12 @@
-import type { ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 
 import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 
-type MainLayoutProps = {
-    children: ReactNode;
-};
-
-function MainLayout({
-    children,
-}: MainLayoutProps) {
+function MainLayout() {
 
     return (
+
         <div className="h-screen flex flex-col">
 
             <Navbar />
@@ -21,13 +16,17 @@ function MainLayout({
                 <Sidebar />
 
                 <main className="flex-1 bg-slate-100 p-8 overflow-auto">
-                    {children}
+
+                    <Outlet />
+
                 </main>
 
             </div>
 
         </div>
+
     );
+
 }
 
-export default MainLayout;
+export default MainLayout;  

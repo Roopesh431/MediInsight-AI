@@ -49,9 +49,7 @@ def get_document(
 # ---------------------------------
 # Read All
 # ---------------------------------
-def get_documents(
-    db: Session,
-):
+def get_documents(db: Session):
 
     return db.query(Document).all()
 

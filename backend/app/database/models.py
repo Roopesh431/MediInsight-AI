@@ -2,10 +2,12 @@ from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy import Float
 
+
 from backend.app.database.database import Base
 
 
 class Document(Base):
+
 
     __tablename__ = "documents"
 

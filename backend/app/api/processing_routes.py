@@ -12,6 +12,9 @@ from backend.app.schemas.parser_response import ParserResponse
 from backend.app.utils.text_storage import save_text
 from backend.app.database.crud import update_document
 
+from fastapi.responses import PlainTextResponse
+from pathlib import Path
+
 router = APIRouter(
     prefix="/documents",
     tags=["Processing"],
@@ -56,6 +59,42 @@ def process_ocr(
     return OCRResponse(
         document_id=document.document_id,
         extracted_text=text,
+    )
+    
+@router.get(
+    "/{document_id}/ocr-text",
+    response_class=PlainTextResponse,
+)
+def get_ocr_text(
+    document_id: str,
+    db: Session = Depends(get_db),
+):
+
+    document, _ = load_document(
+        document_id,
+        db,
+    )
+
+    if not document.ocr_text_path:
+
+        raise HTTPException(
+            status_code=404,
+            detail="OCR not completed.",
+        )
+
+    text_path = Path(
+        document.ocr_text_path,
+    )
+
+    if not text_path.exists():
+
+        raise HTTPException(
+            status_code=404,
+            detail="OCR file missing.",
+        )
+
+    return text_path.read_text(
+        encoding="utf-8",
     )
 
 @router.post("/{document_id}/analyze", response_model=ParserResponse)

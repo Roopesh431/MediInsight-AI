@@ -1,44 +1,94 @@
 import {
-    FaHome,
-    FaFileMedical,
-    FaHistory,
-    FaCog,
-} from "react-icons/fa";
+    NavLink,
+} from "react-router-dom";
+
+import {
+    FiHome,
+    FiFileText,
+    FiClock,
+    FiSettings,
+} from "react-icons/fi";
 
 function Sidebar() {
+
+    const menuItems = [
+
+        {
+            name: "Home",
+            path: "/",
+            icon: <FiHome />,
+        },
+
+        {
+            name: "Documents",
+            path: "/documents",
+            icon: <FiFileText />,
+        },
+
+        {
+            name: "History",
+            path: "/history",
+            icon: <FiClock />,
+        },
+
+        {
+            name: "Settings",
+            path: "/settings",
+            icon: <FiSettings />,
+        },
+
+    ];
+
     return (
-        <aside className="w-64 bg-slate-900 text-white h-full">
-            <div className="p-6 text-xl font-bold border-b border-slate-700">
-                Dashboard
+
+        <aside className="w-64 bg-slate-900 text-white">
+
+            <div className="p-6 border-b border-slate-700">
+
+                <h2 className="text-3xl font-bold">
+
+                    Dashboard
+
+                </h2>
+
             </div>
 
-            <nav className="mt-6">
-                <ul className="space-y-2 px-4">
+            <nav className="p-4 space-y-2">
 
-                    <li className="flex items-center gap-3 p-3 rounded-lg bg-slate-800 cursor-pointer">
-                        <FaHome />
-                        Home
-                    </li>
+                {menuItems.map((item) => (
 
-                    <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 cursor-pointer">
-                        <FaFileMedical />
-                        Documents
-                    </li>
+                    <NavLink
+                        key={item.name}
+                        to={item.path}
+                        className={({ isActive }) =>
 
-                    <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 cursor-pointer">
-                        <FaHistory />
-                        History
-                    </li>
+                            `flex items-center gap-3 rounded-xl px-4 py-3 transition ${
+                                isActive
+                                    ? "bg-slate-700"
+                                    : "hover:bg-slate-800"
+                            }`
 
-                    <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 cursor-pointer">
-                        <FaCog />
-                        Settings
-                    </li>
+                        }
+                    >
 
-                </ul>
+                        <span className="text-lg">
+
+                            {item.icon}
+
+                        </span>
+
+                        {item.name}
+
+                    </NavLink>
+
+                ))}
+
             </nav>
+
         </aside>
+
     );
+
 }
 
 export default Sidebar;

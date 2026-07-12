@@ -1,0 +1,61 @@
+interface StatusBadgeProps {
+    status: string;
+}
+
+function StatusBadge({
+    status,
+}: StatusBadgeProps) {
+
+    function getClasses() {
+
+        switch (status) {
+
+            case "uploaded":
+                return "bg-blue-100 text-blue-700";
+
+            case "ocr_completed":
+                return "bg-yellow-100 text-yellow-700";
+
+            case "ai_completed":
+                return "bg-green-100 text-green-700";
+
+            default:
+                return "bg-gray-100 text-gray-700";
+
+        }
+
+    }
+
+    function getLabel() {
+
+        switch (status) {
+
+            case "uploaded":
+                return "📄 Uploaded";
+
+            case "ocr_completed":
+                return "📝 OCR Complete";
+
+            case "ai_completed":
+                return "🤖 AI Complete";
+
+            default:
+                return status;
+
+        }
+
+    }
+
+    return (
+
+        <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${getClasses()}`}
+        >
+            {getLabel()}
+        </span>
+
+    );
+
+}
+
+export default StatusBadge;

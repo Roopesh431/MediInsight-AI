@@ -2,9 +2,14 @@ import { useEffect, useState } from "react";
 
 import { getDocuments } from "../../services/documentService";
 
+import type { Document } from "../../types/document";
+import DocumentRow from "./DocumentRow";
+
+import DashboardStats from "./DashboardStats";
+
 function RecentDocuments() {
 
-    const [documents, setDocuments] = useState<any[]>([]);
+    const [documents, setDocuments] = useState<Document[]>([]);
 
     async function loadDocuments() {
 
@@ -37,6 +42,10 @@ function RecentDocuments() {
 
         <div className="bg-white rounded-xl shadow p-8 mt-8">
 
+            <DashboardStats
+            documents={documents}
+            />
+
             <h2 className="text-xl font-semibold mb-4">
                 Recent Documents
             </h2>
@@ -47,36 +56,19 @@ function RecentDocuments() {
 
             ) : (
 
-                <ul className="space-y-3">
+                <div className="space-y-4">
 
-                    {documents.map((doc) => (
+    {documents.map((doc) => (
 
-                        <li
-                            key={doc.document_id}
-                            className="border rounded-lg p-3 flex justify-between"
-                        >
+        <DocumentRow
+            key={doc.document_id}
+            document={doc}
+            onRefresh={loadDocuments}
+        />
 
-                            <div>
+    ))}
 
-                                <p className="font-medium">
-                                    {doc.original_filename}
-                                </p>
-
-                                <p className="text-sm text-gray-500">
-                                    {doc.status}
-                                </p>
-
-                            </div>
-
-                            <span className="text-blue-600">
-                                {doc.document_type}
-                            </span>
-
-                        </li>
-
-                    ))}
-
-                </ul>
+</div>
 
             )}
 
