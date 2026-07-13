@@ -1,0 +1,47 @@
+{
+    "document_type": "Hospital Bill",
+    "hospital": "MAYO CLINIC",
+    "patient_name": "Jane Doe",
+    "doctor": "Ulrich, Michael D, M.D.",
+    "statement_date": "01/15/25",
+    "total_charges": 612.0,
+    "remaining_balance": 538.56,
+    "procedures": [
+        {
+            "date": "07/03/2024",
+            "code": "99215",
+            "description": "Established Patient Office or Other Outpatient Visit With High Level of Medical Decision Making, if Using Time, 40 Minutes or More",
+            "charge": 462.0
+        },
+        {
+            "date": "07/03/2024",
+            "code": "J0744",
+            "description": "Ciprofloxacin IV",
+            "charge": 150.0
+        }
+    ],
+    "summary": "This document itemizes professional charges for patient Jane Doe at Mayo Clinic, with a statement date of January 15, 2025. Services provided on July 3, 2024, included an established patient office visit and the administration of Ciprofloxacin IV, totaling $612.00 in charges. After payments and adjustments, a remaining balance of $538.56 is due for these services.",
+    "medical_terms": [
+        {
+            "term": "99215",
+            "meaning": "A Current Procedural Terminology (CPT) code used to bill for an established patient office or outpatient visit involving a high level of medical decision-making or at least 40 minutes of total time."
+        },
+        {
+            "term": "J0744",
+            "meaning": "A Healthcare Common Procedure Coding System (HCPCS) code for Ciprofloxacin, injection, 200 mg. It is often used in billing for medications administered."
+        },
+        {
+            "term": "Ciprofloxacin IV",
+            "meaning": "Ciprofloxacin is a broad-spectrum antibiotic medication administered intravenously (IV) to treat a variety of severe bacterial infections, including respiratory tract infections, urinary tract infections, and skin infections."
+        }
+    ],
+    "patient_advice": [
+        "Review the itemized services carefully and compare them with any explanation of benefits (EOB) from your insurance provider.",
+        "Contact Mayo Clinic at 1-844-217-9591 if you have any questions about the charges or your remaining balance."
+    ],
+    "recommended_questions": [
+        "Is this outstanding balance my full responsibility, or will my insurance cover a portion of it?",
+        "Can you provide a more detailed breakdown of the Ciprofloxacin IV charge, including the exact dosage and unit cost?"
+    ],
+    "confidence": 0.95
+}

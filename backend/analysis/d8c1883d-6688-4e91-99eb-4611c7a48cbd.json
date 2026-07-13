@@ -1,0 +1,47 @@
+{
+    "document_type": "Hospital Bill",
+    "hospital": "MAYO CLINIC",
+    "patient_name": "Jane Doe",
+    "doctor": "Ulrich, Michael D, M.D.",
+    "statement_date": "01/15/25",
+    "total_charges": 612.0,
+    "remaining_balance": 538.56,
+    "procedures": [
+        {
+            "date": "07/03/2024",
+            "code": "99215",
+            "description": "Established Patient Office or Other Outpatient Visit With High Level of Medical Decision Making, if Using Time, 40 Minutes or More",
+            "charge": 462.0
+        },
+        {
+            "date": "07/03/2024",
+            "code": "J0744",
+            "description": "Ciprofloxacin IV",
+            "charge": 150.0
+        }
+    ],
+    "summary": "This document is an itemization of professional services provided by Mayo Clinic for patient Jane Doe. It details an office visit and the administration of Ciprofloxacin IV on July 3, 2024. The total professional charges amounted to $612.00, with a remaining balance of $538.56 after payments and adjustments.",
+    "medical_terms": [
+        {
+            "term": "Ciprofloxacin IV",
+            "meaning": "Ciprofloxacin is an antibiotic medication used to treat a variety of bacterial infections. Administered intravenously (IV), it delivers the medication directly into a vein for rapid absorption and effectiveness, often used for more severe infections or when oral administration is not feasible."
+        },
+        {
+            "term": "99215",
+            "meaning": "This is a CPT (Current Procedural Terminology) code for an established patient office or other outpatient visit, indicating a high level of medical decision making or a visit lasting 40 minutes or more."
+        },
+        {
+            "term": "J0744",
+            "meaning": "This is a HCPCS (Healthcare Common Procedure Coding System) code typically used for injectable drugs, specifically referring to Ciprofloxacin, 200 mg."
+        }
+    ],
+    "patient_advice": [
+        "Review this itemization carefully and compare it with any Explanation of Benefits (EOB) from your insurance company to ensure accuracy.",
+        "For any questions regarding your account or to make payments, please contact Mayo Clinic at 1-844-217-9591 or visit their online services at www.mayoclinic.org/onlineservices."
+    ],
+    "recommended_questions": [
+        "Is this itemization considered a final bill, or will further charges or insurance adjustments be applied to this account?",
+        "Could you provide a more detailed explanation of the 'Self-Pay Discount' applied and how it was calculated?"
+    ],
+    "confidence": 0.96
+}

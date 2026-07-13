@@ -8,7 +8,7 @@ class ParserResponse(BaseModel):
     patient_name: str | None = None
     provider: str | None = None
     statement_date: str | None = None
-    visit_balance: str | None = None
-    total_charges: str | None = None
+    visit_balance: float | None = None
+    total_charges: float | None = None
 
     procedures: List[Procedure] = []

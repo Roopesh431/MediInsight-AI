@@ -15,6 +15,10 @@ from backend.app.database.crud import update_document
 from fastapi.responses import PlainTextResponse
 from pathlib import Path
 
+from backend.app.ai.gemini_service import analyze_with_gemini
+from backend.app.utils.json_storage import save_analysis
+from fastapi.responses import JSONResponse
+
 router = APIRouter(
     prefix="/documents",
     tags=["Processing"],
@@ -124,14 +128,22 @@ def analyze_document(
         text,
     )
 
-    data = extract_medical_information(
+    data = analyze_with_gemini(
     text,
+    )
+
+    analysis_data = data.model_dump()
+
+    analysis_path = save_analysis(
+    document.document_id,
+    analysis_data,
     )
 
     update_document(
         db,
         document.document_id,
-        status="parsed",
+        status="ai_completed",
+        analysis_json_path=analysis_path,
     )
 
-    return ParserResponse(**data)
+    return data

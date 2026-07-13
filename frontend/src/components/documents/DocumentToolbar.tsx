@@ -1,4 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
 function DocumentToolbar() {
+
+    const navigate =
+        useNavigate();
 
     return (
 
@@ -11,7 +16,8 @@ function DocumentToolbar() {
             </h1>
 
             <button
-                className="rounded-xl bg-blue-600 px-5 py-3 text-white"
+                onClick={() => navigate("/")}
+                className="rounded-xl bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
             >
 
                 Upload New

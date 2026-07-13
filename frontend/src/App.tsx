@@ -6,39 +6,18 @@ import {
 import MainLayout from "./layouts/MainLayout";
 
 import Dashboard from "./pages/Dashboard/Dashboard";
-
-import OCRPage from "./pages/OCR/OCRPage";
-
-import AIAnalysisPage from "./pages/AI/AIAnalysisPage";
-
-import ChatPage from "./pages/chat/ChatPage";
-
 import DocumentsPage from "./pages/Documents/DocumentsPage";
 import HistoryPage from "./pages/History/HistoryPage";
 import SettingsPage from "./pages/Settings/SettingsPage";
-
-
+import OCRPage from "./pages/OCR/OCRPage";
+import AIAnalysisPage from "./pages/AI/AIAnalysisPage";
+import ChatPage from "./pages/chat/ChatPage";
 
 function App() {
 
     return (
 
         <Routes>
-
-                        <Route
-                path="documents"
-                element={<DocumentsPage />}
-            />
-
-            <Route
-                path="history"
-                element={<HistoryPage />}
-            />
-
-            <Route
-                path="settings"
-                element={<SettingsPage />}
-            />
 
             <Route
                 path="/"
@@ -48,6 +27,21 @@ function App() {
                 <Route
                     index
                     element={<Dashboard />}
+                />
+
+                <Route
+                    path="documents"
+                    element={<DocumentsPage />}
+                />
+
+                <Route
+                    path="history"
+                    element={<HistoryPage />}
+                />
+
+                <Route
+                    path="settings"
+                    element={<SettingsPage />}
                 />
 
                 <Route

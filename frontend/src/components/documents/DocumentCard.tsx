@@ -3,22 +3,54 @@ import type { Document } from "../../types/document";
 import StatusBadge from "../common/StatusBadge";
 import ConfidenceBadge from "../common/ConfidenceBadge";
 
+import { useNavigate } from "react-router-dom";
+
 import {
-    useNavigate,
-} from "react-router-dom";
+    deleteDocument,
+} from "../../services/documentService";
 
 interface Props {
 
     document: Document;
 
+    onDelete: () => Promise<void>;
+
 }
 
 function DocumentCard({
     document,
+    onDelete,
 }: Props) {
 
-    const navigate =
-        useNavigate();
+    const navigate = useNavigate();
+
+    async function handleDelete() {
+
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this document?",
+        );
+
+        if (!confirmed) return;
+
+        try {
+
+            await deleteDocument(
+                document.document_id,
+            );
+
+            await onDelete();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            alert("Delete failed.");
+
+        }
+
+    }
 
     return (
 
@@ -44,18 +76,14 @@ function DocumentCard({
 
                     <p className="mt-3">
 
-                        Type:
-                        {" "}
-                        {document.document_type}
+                        Type: {document.document_type}
 
                     </p>
 
                     <div className="mt-3">
 
                         <ConfidenceBadge
-                            confidence={
-                                document.confidence
-                            }
+                            confidence={document.confidence}
                         />
 
                     </div>
@@ -72,7 +100,7 @@ function DocumentCard({
                             `/ocr/${document.document_id}`,
                         )
                     }
-                    className="rounded-lg bg-blue-600 px-4 py-2 text-white"
+                    className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                 >
 
                     OCR
@@ -85,7 +113,7 @@ function DocumentCard({
                             `/ai/${document.document_id}`,
                         )
                     }
-                    className="rounded-lg bg-green-600 px-4 py-2 text-white"
+                    className="rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700"
                 >
 
                     AI Report
@@ -98,7 +126,7 @@ function DocumentCard({
                             `/chat/${document.document_id}`,
                         )
                     }
-                    className="rounded-lg bg-purple-600 px-4 py-2 text-white"
+                    className="rounded-lg bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
                 >
 
                     Chat
@@ -106,7 +134,8 @@ function DocumentCard({
                 </button>
 
                 <button
-                    className="rounded-lg bg-red-600 px-4 py-2 text-white"
+                    onClick={handleDelete}
+                    className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
                 >
 
                     Delete

@@ -28,3 +28,5 @@ class Document(Base):
     status = Column(String)
     
     ocr_text_path = Column(String)
+    
+    analysis_json_path = Column(String)

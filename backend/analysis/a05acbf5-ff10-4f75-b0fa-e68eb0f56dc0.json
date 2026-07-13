@@ -1,0 +1,51 @@
+{
+    "document_type": "Hospital Bill",
+    "hospital": "MAYO CLINIC",
+    "patient_name": "Jane Doe",
+    "doctor": "Ulrich, Michael D, M.D.",
+    "statement_date": "01/15/25",
+    "total_charges": 612.0,
+    "remaining_balance": 538.56,
+    "procedures": [
+        {
+            "date": "07/03/2024",
+            "code": "99215",
+            "description": "Established Patient Office or Other Outpatient Visit With High Level of Medical Decision Making, if Using Time, 40 Minutes or More",
+            "charge": 462.0
+        },
+        {
+            "date": "07/03/2024",
+            "code": "J0744",
+            "description": "Ciprofloxacin IV",
+            "charge": 150.0
+        }
+    ],
+    "summary": "This document is an itemization of services for patient Jane Doe from Mayo Clinic, with a statement date of January 15, 2025. It details professional charges totaling $612.00 for services rendered on July 3, 2024, including an office visit and medication administration. After professional payments and adjustments, the remaining visit balance is $538.56.",
+    "medical_terms": [
+        {
+            "term": "Ciprofloxacin IV",
+            "meaning": "Ciprofloxacin is an antibiotic used to treat a variety of bacterial infections. Administering it intravenously (IV) means it is given directly into a vein."
+        },
+        {
+            "term": "99215",
+            "meaning": "A CPT (Current Procedural Terminology) code representing an established patient office or other outpatient visit, indicating a high level of medical decision making or 40 minutes or more of time spent."
+        },
+        {
+            "term": "NDC Code",
+            "meaning": "National Drug Code, a unique 10-digit, 3-segment number assigned to all FDA-approved prescription and over-the-counter drug products in the United States."
+        },
+        {
+            "term": "Dx Code",
+            "meaning": "Diagnosis Code, a medical classification code used to identify diseases, disorders, symptoms, and other reasons for encounters."
+        }
+    ],
+    "patient_advice": [
+        "Review the itemized services and charges carefully to ensure accuracy and match them against any personal records you may have.",
+        "Contact Mayo Clinic at 1-844-217-9591 or use their online services at www.mayoclinic.org/onlineservices if you have any questions about your account or wish to make a payment."
+    ],
+    "recommended_questions": [
+        "Could you provide a more detailed breakdown or explanation of the services included in the 'Established Patient Office or Other Outpatient Visit' charge?",
+        "Are there any additional financial assistance programs or payment plan options available to help manage the remaining balance?"
+    ],
+    "confidence": 0.98
+}

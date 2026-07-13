@@ -6,6 +6,7 @@ from backend.app.database.models import Document
 # ---------------------------------
 # Create
 # ---------------------------------
+
 def create_document(
     db: Session,
     document_id: str,
@@ -34,6 +35,7 @@ def create_document(
 # ---------------------------------
 # Read One
 # ---------------------------------
+
 def get_document(
     db: Session,
     document_id: str,
@@ -49,29 +51,37 @@ def get_document(
 # ---------------------------------
 # Read All
 # ---------------------------------
-def get_documents(db: Session):
 
-    return db.query(Document).all()
+def get_documents(
+    db: Session,
+):
+
+    return (
+        db.query(Document)
+        .order_by(Document.document_id.desc())
+        .all()
+    )
 
 
 # ---------------------------------
 # Delete
 # ---------------------------------
+
 def delete_document(
     db: Session,
     document_id: str,
 ):
 
-    document = (
-        db.query(Document)
-        .filter(Document.document_id == document_id)
-        .first()
+    document = get_document(
+        db,
+        document_id,
     )
 
-    if document:
+    if document is None:
+        return None
 
-        db.delete(document)
-        db.commit()
+    db.delete(document)
+    db.commit()
 
     return document
 
@@ -79,29 +89,16 @@ def delete_document(
 # ---------------------------------
 # Generic Update
 # ---------------------------------
+
 def update_document(
     db: Session,
     document_id: str,
     **fields,
 ):
-    """
-    Generic document updater.
 
-    Example:
-        update_document(
-            db,
-            document_id,
-            status="ocr_completed",
-            confidence=0.98,
-            document_type="Hospital Bill",
-            ocr_text_path="backend/extracted_text/123.txt",
-        )
-    """
-
-    document = (
-        db.query(Document)
-        .filter(Document.document_id == document_id)
-        .first()
+    document = get_document(
+        db,
+        document_id,
     )
 
     if document is None:
@@ -110,17 +107,29 @@ def update_document(
     for key, value in fields.items():
 
         if hasattr(document, key):
-            setattr(document, key, value)
+
+            setattr(
+                document,
+                key,
+                value,
+            )
+
+    db.add(document)
 
     db.commit()
+
     db.refresh(document)
 
-    return document
+    return document   
+# ---------------------------------
+# Compatibility Wrapper
+# ---------------------------------
 
 def get_document_by_id(
     db: Session,
     document_id: str,
 ):
+
     return get_document(
         db,
         document_id,

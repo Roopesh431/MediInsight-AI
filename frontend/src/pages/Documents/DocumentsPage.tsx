@@ -78,6 +78,7 @@ function DocumentsPage() {
                     <DocumentCard
                         key={doc.document_id}
                         document={doc}
+                        onDelete={loadDocuments}
                     />
 
                 ))}

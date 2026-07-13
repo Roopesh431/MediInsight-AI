@@ -1,28 +1,11 @@
 import api from "./api";
 import type { Document } from "../types/document";
 
-export async function getOCRText(
-    documentId: string,
-) {
-
-    const response = await api.get(
-        `/documents/${documentId}/ocr-text`,
-    );
-
-    return response.data;
-
-}
-
-export async function uploadDocument(
-    file: File,
-) {
+export async function uploadDocument(file: File) {
 
     const formData = new FormData();
 
-    formData.append(
-        "file",
-        file,
-    );
+    formData.append("file", file);
 
     const response = await api.post(
         "/documents",
@@ -35,11 +18,14 @@ export async function uploadDocument(
     );
 
     return response.data;
+
 }
 
 export async function getDocuments(): Promise<Document[]> {
 
-    const response = await api.get("/documents");
+    const response = await api.get(
+        "/documents",
+    );
 
     return response.data;
 
@@ -63,6 +49,30 @@ export async function runAIAnalysis(
 
     const response = await api.post(
         `/documents/${documentId}/ai-analyze`,
+    );
+
+    return response.data;
+
+}
+
+export async function getOCRText(
+    documentId: string,
+) {
+
+    const response = await api.get(
+        `/documents/${documentId}/ocr-text`,
+    );
+
+    return response.data;
+
+}
+
+export async function getAnalysis(
+    documentId: string,
+) {
+
+    const response = await api.get(
+        `/documents/${documentId}/analysis`,
     );
 
     return response.data;
