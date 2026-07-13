@@ -1,286 +1,232 @@
 # 🏥 MediInsight AI
 
-An AI-powered medical document analysis platform that helps patients understand hospital bills and medical reports using OCR, Natural Language Processing, and Large Language Models.
+An AI-powered medical document analysis platform that extracts information from hospital bills, prescriptions, lab reports, and medical documents using OCR and Large Language Models.
 
 ---
 
-## 📌 Overview
+## 🚀 Project Progress
 
-MediInsight AI extracts text from uploaded medical PDFs, analyzes the document using AI, explains medical terminology in simple language, and allows users to ask questions about their medical documents through an intelligent chatbot.
+```text
+Backend         ████████████████████ 100%
 
-The project is built with a modular backend architecture using FastAPI and is designed to be extended with a modern React frontend.
+Frontend        ███████████████████░ 95%
 
----
+AI Integration  ████████████████████ 100%
 
-# ✨ Features
+OCR Pipeline    ████████████████████ 100%
 
-## 📄 Document Upload
+Database        ████████████████████ 100%
 
-- Upload PDF medical reports
-- Upload hospital bills
-- Automatic document storage
-- SHA-256 integrity hash generation
+Authentication  ░░░░░░░░░░░░░░░░░░░░   0%
 
----
+Deployment      ░░░░░░░░░░░░░░░░░░░░   0%
 
-## 🔍 OCR
+Testing         ████████████████░░░░ 80%
 
-- Extract text from scanned PDFs
-- OCR text stored for future reuse
-- Avoids re-uploading documents
-
----
-
-## 📊 Rule-Based Analysis
-
-Automatically extracts:
-
-- Patient Name
-- Hospital
-- Doctor
-- Statement Date
-- Visit Balance
-- Total Charges
-- Medical Procedures
-
----
-
-## 🤖 AI Analysis
-
-Powered by **Google Gemini**.
-
-Provides:
-
-- Medical summary
-- Medical term explanations
-- Patient-friendly advice
-- Suggested questions to ask doctors
-- Confidence score
-- Structured JSON output
-
----
-
-## 💬 AI Chat
-
-Users can ask questions such as:
-
-- Why is my balance so high?
-- What is Ciprofloxacin IV?
-- What does CPT Code 99215 mean?
-- What should I ask my doctor?
-
-The chatbot answers using the OCR text extracted from the uploaded document.
-
----
-
-## 📁 Document Management
-
-- Upload documents
-- View uploaded documents
-- Process OCR
-- Run AI Analysis
-- Delete documents
-- SQLite metadata storage
-
----
-
-# 🏗 Backend Architecture
-
-```
-Client
-   │
-   ▼
-FastAPI API
-   │
-   ├── Upload Routes
-   ├── Document Routes
-   ├── Processing Routes
-   └── AI Routes
-           │
-           ▼
-      Service Layer
-           │
-           ▼
-      AI Integration
-      OCR Engine
-      Parser
-      Chat
-           │
-           ▼
-      SQLite Database
+Documentation   ██████████████████░░ 90%
 ```
 
 ---
 
-# 📂 Project Structure
+## ✨ Features
 
-```
-backend/
-│
-├── app/
-│   ├── ai/
-│   ├── api/
-│   ├── database/
-│   ├── schemas/
-│   ├── services/
-│   ├── utils/
-│   └── main.py
-│
-├── uploads/
-├── extracted_text/
-├── config.py
-└── requirements.txt
-```
+- 📄 Upload Medical Documents (PDF)
+- 🔍 OCR Text Extraction
+- 🤖 AI Medical Report Generation
+- 💊 Medical Term Explanation
+- 🩺 Patient Advice
+- 📋 Procedure Extraction
+- ❓ AI Suggested Questions
+- 💬 AI Chat Assistant
+- 📑 Export AI Report as PDF
+- 📂 Search & Filter Documents
+- 📊 Dashboard Analytics
+- 📜 Processing History
+- ⚙️ Settings Page
 
 ---
 
-# 🛠 Tech Stack
+## 🛠 Tech Stack
 
-## Backend
+### Frontend
 
-- Python
+- React
+- TypeScript
+- Tailwind CSS
+- React Router
+- Axios
+- React Hot Toast
+- jsPDF
+
+### Backend
+
 - FastAPI
 - SQLAlchemy
 - SQLite
 - Pydantic
 
-## AI
+### AI
 
-- Google Gemini API
+- Google Gemini 2.5 Flash
 - PaddleOCR
-
-## Utilities
-
-- UUID
-- SHA-256
-- pathlib
+- pdf2image
 
 ---
 
-# 📌 Available APIs
+## 📸 Screenshots
 
-| Method | Endpoint | Description |
-|----------|------------------------------|-----------------------------|
-| POST | `/documents` | Upload PDF |
-| GET | `/documents` | List uploaded documents |
-| GET | `/documents/{id}` | Document details |
-| DELETE | `/documents/{id}` | Delete document |
-| POST | `/documents/{id}/ocr` | Extract OCR |
-| POST | `/documents/{id}/analyze` | Rule-based analysis |
-| POST | `/documents/{id}/ai-analyze` | AI analysis |
-| POST | `/documents/{id}/chat` | Chat with document |
+### Dashboard
+
+![Dashboard](screenshots/dashboard.png)
 
 ---
 
-# 📊 Current Status
+### Upload Workflow
 
-## ✅ Completed
-
-- Backend Architecture
-- Modular API Design
-- PDF Upload
-- OCR
-- Rule-Based Parser
-- Gemini AI Integration
-- AI Chat
-- SQLite Database
-- Document Management
-- Swagger Documentation
+![Upload](screenshots/upload.png)
 
 ---
 
-## 🚧 In Progress
+### Documents
 
-- React Frontend
-- Dashboard
-- Authentication
-- Docker Support
+![Documents](screenshots/documents.png)
 
 ---
 
-## 📅 Planned
+### OCR Result
 
-- User Accounts
-- RAG
-- Vector Database
-- Medical Report Comparison
-- Export AI Analysis
-- Cloud Deployment
+![OCR](screenshots/ocr.png)
 
 ---
 
-# 🚀 Running Locally
+### AI Medical Report
+
+![AI Report](screenshots/ai-report.png)
+
+---
+
+### AI Chat Assistant
+
+![Chat](screenshots/chat.png)
+
+---
+
+### History
+
+![History](screenshots/history.png)
+
+---
+
+## 🏗 Architecture
+
+```
+Frontend (React + TypeScript)
+        │
+        ▼
+ FastAPI REST API
+        │
+        ▼
+SQLite Database
+        │
+        ├────────► OCR Pipeline (PaddleOCR)
+        │
+        └────────► Gemini 2.5 Flash
+```
+
+---
+
+## 📁 Project Structure
+
+```
+MediInsight-AI
+│
+├── backend
+│   ├── ai
+│   ├── api
+│   ├── database
+│   ├── services
+│   ├── utils
+│   ├── uploads
+│   ├── extracted_text
+│   └── analysis
+│
+├── frontend
+│   ├── components
+│   ├── pages
+│   ├── services
+│   ├── utils
+│   └── types
+│
+├── screenshots
+├── README.md
+└── requirements.txt
+```
+
+---
+
+## ⚙️ Installation
+
+### Backend
 
 ```bash
-git clone https://github.com/Roopesh431/MediInsight-AI.git
-
-cd MediInsight-AI
+cd backend
 
 python -m venv .venv
 
-source .venv/bin/activate
-```
-
-Install dependencies
-
-```bash
 pip install -r requirements.txt
-```
 
-Create
-
-```
-backend/.env
-```
-
-```env
-GEMINI_API_KEY=YOUR_API_KEY
-```
-
-Run
-
-```bash
 uvicorn backend.app.main:app --reload
 ```
 
-Open
+### Frontend
 
-```
-http://127.0.0.1:8000/docs
-```
+```bash
+cd frontend
 
----
+npm install
 
-# 📈 Development Progress
-
-```
-Backend        ████████████████████ 100%
-
-Frontend       ░░░░░░░░░░░░░░░░░░░░   0%
-
-Authentication ░░░░░░░░░░░░░░░░░░░░
-
-Deployment     ░░░░░░░░░░░░░░░░░░░░
+npm run dev
 ```
 
 ---
 
-# 👨‍💻 Author
+## 🎯 Roadmap
+
+### Version 1.1
+
+- User Authentication
+- User Accounts
+- Cloud File Storage
+- Responsive Mobile UI
+
+### Version 1.2
+
+- RAG-based Chat
+- Medical Report Comparison
+- Medical Timeline
+- Better PDF Export
+
+### Version 2.0
+
+- Doctor Dashboard
+- Patient Dashboard
+- Appointment Integration
+- Multi-language OCR
+- DICOM Image Support
+- Medical Image Analysis
+
+---
+
+## 👨‍💻 Author
 
 **Lingam Roopesh**
 
-B.Tech — Internet of Things
+B.Tech - Internet of Things
 
-Passionate about AI, Embedded Systems, IoT, and Healthcare Technology.
+KL University
 
 ---
 
-# ⭐ Future Vision
+## ⭐ If you like this project
 
-MediInsight AI aims to become an intelligent healthcare assistant capable of:
-
-- Understanding medical reports
-- Explaining complex terminology
-- Assisting patients with billing
-- Comparing historical reports
-- Answering medical document questions using Retrieval-Augmented Generation (RAG)
+Please consider giving it a ⭐ on GitHub.

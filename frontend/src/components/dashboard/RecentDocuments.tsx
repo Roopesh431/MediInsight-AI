@@ -1,80 +1,71 @@
-import { useEffect, useState } from "react";
-
-import { getDocuments } from "../../services/documentService";
-
 import type { Document } from "../../types/document";
+
 import DocumentRow from "./DocumentRow";
 
-import DashboardStats from "./DashboardStats";
+interface Props {
 
-function RecentDocuments() {
+    documents: Document[];
 
-    const [documents, setDocuments] = useState<Document[]>([]);
+    onRefresh?: () => Promise<void>;
 
-    async function loadDocuments() {
-
-        try {
-
-            const data = await getDocuments();
-
-            setDocuments(data);
-
-        } catch (error: any) {
-
-    console.error("Upload Error:", error);
-
-    if (error.response) {
-        console.log("Status:", error.response.status);
-        console.log("Data:", error.response.data);
-    }
-
-    alert("Upload Failed.");
 }
+
+function RecentDocuments({
+
+    documents,
+
+    onRefresh = async () => {},
+
+}: Props) {
+
+    if (documents.length === 0) {
+
+        return (
+
+            <div className="rounded-2xl border border-dashed bg-white p-16 text-center shadow-sm">
+
+                <div className="text-7xl">
+
+                    📂
+
+                </div>
+
+                <h2 className="mt-6 text-2xl font-bold">
+
+                    No Documents Yet
+
+                </h2>
+
+                <p className="mt-3 text-gray-500">
+
+                    Upload your first medical report to begin AI analysis.
+
+                </p>
+
+            </div>
+
+        );
+
     }
-
-    useEffect(() => {
-
-        loadDocuments();
-
-    }, []);
 
     return (
 
-        <div className="bg-white rounded-xl shadow p-8 mt-8">
+        <div className="space-y-5">
 
-            <DashboardStats
-            documents={documents}
-            />
+            {documents.map((document) => (
 
-            <h2 className="text-xl font-semibold mb-4">
-                Recent Documents
-            </h2>
+                <DocumentRow
+                    key={document.document_id}
+                    document={document}
+                    onRefresh={onRefresh}
+                />
 
-            {documents.length === 0 ? (
-
-                <p>No documents uploaded.</p>
-
-            ) : (
-
-                <div className="space-y-4">
-
-    {documents.map((doc) => (
-
-        <DocumentRow
-            key={doc.document_id}
-            document={doc}
-            onRefresh={loadDocuments}
-        />
-
-    ))}
-
-</div>
-
-            )}
+            ))}
 
         </div>
 
     );
+
 }
 
 export default RecentDocuments;

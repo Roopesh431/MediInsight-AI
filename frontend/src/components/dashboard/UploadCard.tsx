@@ -1,13 +1,21 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-import { uploadDocument } from "../../services/documentService";
-import { delay } from "../../utils/delay";
+import {
+    uploadDocument,
+    runOCR,
+    runAIAnalysis,
+} from "../../services/documentService";
 
 import StatusStep from "../common/StatusStep";
 
 function UploadCard() {
 
-    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const [loading, setLoading] =
+        useState(false);
 
     const [selectedFile, setSelectedFile] =
         useState("");
@@ -25,7 +33,8 @@ function UploadCard() {
         event: React.ChangeEvent<HTMLInputElement>,
     ) {
 
-        const file = event.target.files?.[0];
+        const file =
+            event.target.files?.[0];
 
         if (!file) return;
 
@@ -37,27 +46,62 @@ function UploadCard() {
 
             setCurrentStep("uploading");
 
-            await uploadDocument(file);
+            const uploaded =
+                await uploadDocument(file);
 
-            await delay(700);
+            toast.success(
+                "Document uploaded.",
+            );
 
             setCurrentStep("ocr");
 
-            await delay(700);
+            await runOCR(
+                uploaded.document_id,
+            );
+
+            toast.success(
+                "OCR completed.",
+            );
 
             setCurrentStep("ai");
 
-            await delay(700);
+            await runAIAnalysis(
+                uploaded.document_id,
+            );
+
+            toast.success(
+                "AI Analysis completed.",
+            );
 
             setCurrentStep("completed");
 
-        } catch (error) {
+            toast.success(
+                "Document ready!",
+            );
+
+            setTimeout(() => {
+
+                navigate(
+                    `/ai/${uploaded.document_id}`,
+                );
+
+            }, 1200);
+
+        }
+
+        catch (error) {
 
             console.error(error);
 
+            toast.error(
+                "Processing failed.",
+            );
+
             setCurrentStep("idle");
 
-        } finally {
+        }
+
+        finally {
 
             setLoading(false);
 
@@ -67,111 +111,133 @@ function UploadCard() {
 
     return (
 
-        <div className="bg-white rounded-xl shadow p-8">
+        <div className="rounded-2xl bg-white p-8 shadow">
 
-            <h2 className="text-xl font-semibold mb-6">
-                Upload Medical Document
-            </h2>
+            <div className="flex items-center justify-between">
 
-            <input
-                type="file"
-                accept=".pdf"
-                onChange={handleUpload}
-            />
+                <div>
 
-            {currentStep !== "idle" && (
+                    <h2 className="text-2xl font-bold">
 
-                <div className="mt-8 space-y-4 border rounded-xl p-5 bg-slate-50">
+                        Upload Medical Document
 
-                    <h3 className="font-semibold text-lg">
-                        🤖 MediInsight AI
-                    </h3>
+                    </h2>
 
-                    <p className="text-gray-600">
+                    <p className="mt-2 text-gray-500">
 
-                        {currentStep === "completed"
-                            ? "Document Ready"
-                            : "Processing"}
-
-                        <span className="font-medium ml-1">
-                            {selectedFile}
-                        </span>
+                        Upload a PDF and let MediInsight AI
+                        automatically perform OCR and AI
+                        analysis.
 
                     </p>
 
-                    <StatusStep
-                        title="Upload Complete"
-                        status={
-                            currentStep === "uploading" ||
-                            currentStep === "ocr" ||
-                            currentStep === "ai" ||
-                            currentStep === "completed"
-                                ? "completed"
-                                : "pending"
-                        }
+                </div>
+
+            </div>
+
+            <div className="mt-8">
+
+                <label
+                    className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 transition ${
+                        loading
+                            ? "cursor-not-allowed opacity-70"
+                            : "hover:border-blue-500 hover:bg-blue-50"
+                    }`}
+                >
+
+                    <div className="text-6xl">
+
+                        📄
+
+                    </div>
+
+                    <p className="mt-4 text-lg font-semibold">
+
+                        Click to upload PDF
+
+                    </p>
+
+                    <p className="mt-2 text-sm text-gray-500">
+
+                        Medical Bills • Reports • Prescriptions
+
+                    </p>
+
+                    <input
+                        type="file"
+                        accept=".pdf"
+                        disabled={loading}
+                        onChange={handleUpload}
+                        className="hidden"
                     />
 
-                    <StatusStep
-                        title="Extracting Text"
-                        status={
-                            currentStep === "ocr"
-                                ? "loading"
-                                : currentStep === "ai" ||
-                                  currentStep === "completed"
-                                ? "completed"
-                                : "pending"
-                        }
-                    />
+                </label>
 
-                    <StatusStep
-                        title="AI Analysis"
-                        status={
-                            currentStep === "ai"
-                                ? "loading"
-                                : currentStep === "completed"
-                                ? "completed"
-                                : "pending"
-                        }
-                    />
+            </div>
 
-                    <StatusStep
-                        title="Ready for Chat"
-                        status={
-                            currentStep === "completed"
-                                ? "completed"
-                                : "pending"
-                        }
-                    />
+            {currentStep !== "idle" && (
 
-                    {currentStep !== "completed" && (
+                <div className="mt-8 rounded-xl border bg-slate-50 p-6">
 
-                        <p className="text-sm text-gray-500 mt-4">
+                    <h3 className="text-lg font-semibold">
 
-                            Please wait while MediInsight AI
-                            processes your medical document...
+                        🤖 MediInsight AI Processing
 
-                        </p>
+                    </h3>
 
-                    )}
+                    <p className="mt-2 text-gray-600">
 
-                    {currentStep === "completed" && (
+                        {selectedFile}
 
-                        <div className="mt-4 rounded-lg bg-green-50 p-3 border border-green-200">
+                    </p>
 
-                            <p className="font-medium text-green-700">
-                                🎉 Your document is ready!
-                            </p>
+                    <div className="mt-6 space-y-4">
 
-                            <p className="text-sm text-green-600">
+                        <StatusStep
+                            title="Upload Complete"
+                            status={
+                                currentStep === "uploading" ||
+                                currentStep === "ocr" ||
+                                currentStep === "ai" ||
+                                currentStep === "completed"
+                                    ? "completed"
+                                    : "pending"
+                            }
+                        />
 
-                                You can now analyze or chat
-                                with this document.
+                        <StatusStep
+                            title="OCR Extraction"
+                            status={
+                                currentStep === "ocr"
+                                    ? "loading"
+                                    : currentStep === "ai" ||
+                                      currentStep === "completed"
+                                    ? "completed"
+                                    : "pending"
+                            }
+                        />
 
-                            </p>
+                        <StatusStep
+                            title="AI Analysis"
+                            status={
+                                currentStep === "ai"
+                                    ? "loading"
+                                    : currentStep === "completed"
+                                    ? "completed"
+                                    : "pending"
+                            }
+                        />
 
-                        </div>
+                        <StatusStep
+                            title="Ready"
+                            status={
+                                currentStep === "completed"
+                                    ? "completed"
+                                    : "pending"
+                            }
+                        />
 
-                    )}
+                    </div>
 
                 </div>
 

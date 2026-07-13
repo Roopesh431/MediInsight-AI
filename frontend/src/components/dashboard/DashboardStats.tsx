@@ -1,95 +1,80 @@
-import type { Document } from "../../types/document";
+import StatsCard from "./StatsCard";
 
-interface DashboardStatsProps {
+interface Props {
 
-    documents: Document[];
+    totalDocuments: number;
+
+    aiReports: number;
+
+    ocrCompleted: number;
+
+    averageConfidence: number;
 
 }
 
 function DashboardStats({
-    documents,
-}: DashboardStatsProps) {
 
-    const totalDocuments =
-        documents.length;
+    totalDocuments,
 
-    const ocrCompleted =
-        documents.filter(
-            (doc) =>
-                doc.status === "ocr_completed" ||
-                doc.status === "ai_completed",
-        ).length;
+    aiReports,
 
-    const aiCompleted =
-        documents.filter(
-            (doc) =>
-                doc.status === "ai_completed",
-        ).length;
+    ocrCompleted,
 
-    const cards = [
+    averageConfidence,
 
-        {
-            title: "Documents",
-            value: totalDocuments,
-            color: "bg-blue-100 text-blue-700",
-            icon: "📄",
-        },
-
-        {
-            title: "OCR Complete",
-            value: ocrCompleted,
-            color: "bg-yellow-100 text-yellow-700",
-            icon: "📝",
-        },
-
-        {
-            title: "AI Complete",
-            value: aiCompleted,
-            color: "bg-green-100 text-green-700",
-            icon: "🤖",
-        },
-
-        {
-            title: "Chats",
-            value: "Soon",
-            color: "bg-purple-100 text-purple-700",
-            icon: "💬",
-        },
-
-    ];
+}: Props) {
 
     return (
 
-        <div className="grid grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
 
-            {cards.map((card) => (
+            <StatsCard
 
-                <div
-                    key={card.title}
-                    className={`rounded-xl p-6 shadow ${card.color}`}
-                >
+                title="Documents"
 
-                    <p className="text-4xl">
+                value={totalDocuments}
 
-                        {card.icon}
+                icon="📄"
 
-                    </p>
+                color="text-blue-600"
 
-                    <h2 className="mt-4 font-semibold">
+            />
 
-                        {card.title}
+            <StatsCard
 
-                    </h2>
+                title="AI Reports"
 
-                    <p className="text-3xl font-bold">
+                value={aiReports}
 
-                        {card.value}
+                icon="🤖"
 
-                    </p>
+                color="text-green-600"
 
-                </div>
+            />
 
-            ))}
+            <StatsCard
+
+                title="OCR Completed"
+
+                value={ocrCompleted}
+
+                icon="📝"
+
+                color="text-purple-600"
+
+            />
+
+            <StatsCard
+
+                title="Avg Confidence"
+
+                value={`${averageConfidence}%`}
+
+                icon="🎯"
+
+                color="text-orange-500"
+
+            />
 
         </div>
 

@@ -5,15 +5,77 @@ function SettingsPage() {
     return (
 
         <PageContainer
-            title="⚙ Settings"
-            subtitle="Configure MediInsight AI."
+            title="⚙️ Settings"
+            subtitle="Application information"
         >
 
-            <p className="text-gray-500">
+            <div className="rounded-xl bg-white p-8 shadow">
 
-                Settings page coming soon.
+                <h2 className="text-2xl font-bold">
 
-            </p>
+                    MediInsight AI v1.0
+
+                </h2>
+
+                <div className="mt-6 space-y-3">
+
+                    <p>
+
+                        <strong>Frontend</strong>
+
+                        {" "}
+                        React + TypeScript + Tailwind CSS
+
+                    </p>
+
+                    <p>
+
+                        <strong>Backend</strong>
+
+                        {" "}
+                        FastAPI
+
+                    </p>
+
+                    <p>
+
+                        <strong>Database</strong>
+
+                        {" "}
+                        SQLite
+
+                    </p>
+
+                    <p>
+
+                        <strong>OCR</strong>
+
+                        {" "}
+                        PaddleOCR
+
+                    </p>
+
+                    <p>
+
+                        <strong>AI Model</strong>
+
+                        {" "}
+                        Gemini 2.5 Flash
+
+                    </p>
+
+                    <p>
+
+                        <strong>Version</strong>
+
+                        {" "}
+                        v1.0.0
+
+                    </p>
+
+                </div>
+
+            </div>
 
         </PageContainer>
 

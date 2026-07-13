@@ -1,14 +1,27 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import {
+    useState,
+    useEffect,
+    useRef,
+} from "react";
 
-import ChatBubble from "../../components/chat/ChatBubble";
+import {
+    useParams,
+} from "react-router-dom";
+
 import PageContainer from "../../components/layout/PageContainer";
 
-import type { ChatMessage } from "../../types/chat";
+import ChatBubble from "../../components/chat/ChatBubble";
+import SuggestedQuestions from "../../components/chat/SuggestedQuestions";
+
+import type {
+    ChatMessage,
+} from "../../types/chat";
 
 import {
     chatWithDocument,
 } from "../../services/documentService";
+
+import toast from "react-hot-toast";
 
 function ChatPage() {
 
@@ -23,19 +36,33 @@ function ChatPage() {
     const [loading, setLoading] =
         useState(false);
 
-    async function sendQuestion() {
+    const bottomRef =
+        useRef<HTMLDivElement>(null);
 
-        if (!question.trim()) return;
+    useEffect(() => {
+
+        bottomRef.current?.scrollIntoView({
+            behavior: "smooth",
+        });
+
+    }, [messages, loading]);
+
+    async function sendQuestion(customQuestion?: string) {
+
+        const currentQuestion =
+            customQuestion ?? question;
+
+        if (!currentQuestion.trim()) return;
 
         const userMessage: ChatMessage = {
 
             role: "user",
 
-            content: question,
+            content: currentQuestion,
 
         };
 
-        setMessages((prev) => [
+        setMessages(prev => [
 
             ...prev,
 
@@ -50,7 +77,7 @@ function ChatPage() {
             const response =
                 await chatWithDocument(
                     documentId!,
-                    question,
+                    currentQuestion,
                 );
 
             const aiMessage: ChatMessage = {
@@ -61,7 +88,7 @@ function ChatPage() {
 
             };
 
-            setMessages((prev) => [
+            setMessages(prev => [
 
                 ...prev,
 
@@ -74,6 +101,25 @@ function ChatPage() {
         catch (error) {
 
             console.error(error);
+
+            toast.error(
+                "Unable to contact AI.",
+            );
+
+            setMessages(prev => [
+
+                ...prev,
+
+                {
+
+                    role: "assistant",
+
+                    content:
+                        "Sorry, something went wrong while processing your request.",
+
+                },
+
+            ]);
 
         }
 
@@ -91,31 +137,87 @@ function ChatPage() {
 
         <PageContainer
             title="💬 AI Assistant"
-            subtitle="Ask questions about this document."
+            subtitle="Ask questions about this medical document."
         >
 
             <div className="flex flex-col h-[75vh]">
 
-                <div className="flex-1 bg-white rounded-xl border p-6 overflow-y-auto space-y-4">
+                <div className="mb-5">
+
+                    <SuggestedQuestions
+                        questions={[
+
+                            "What is my remaining balance?",
+
+                            "Summarize this report",
+
+                            "Explain the medical terms",
+
+                            "List all procedures",
+
+                        ]}
+                        onSelect={(q) => {
+
+                            setQuestion(q);
+
+                            sendQuestion(q);
+
+                        }}
+                    />
+
+                </div>
+
+                <div className="flex-1 overflow-y-auto rounded-xl border bg-white p-6 shadow-sm space-y-4">
+
+                    {messages.length === 0 && (
+
+                        <div className="text-center text-gray-500 mt-20">
+
+                            <div className="text-6xl mb-4">
+
+                                🤖
+
+                            </div>
+
+                            <h2 className="text-xl font-semibold">
+
+                                MediInsight AI
+
+                            </h2>
+
+                            <p className="mt-2">
+
+                                Ask anything about your uploaded document.
+
+                            </p>
+
+                        </div>
+
+                    )}
 
                     {messages.map((message, index) => (
 
                         <ChatBubble
+
                             key={index}
+
                             message={message}
+
                         />
 
                     ))}
 
                     {loading && (
 
-                        <p className="text-gray-500">
+                        <div className="rounded-xl bg-gray-100 p-4 w-fit">
 
-                            Thinking...
+                            🤖 Thinking...
 
-                        </p>
+                        </div>
 
                     )}
+
+                    <div ref={bottomRef} />
 
                 </div>
 
@@ -126,9 +228,11 @@ function ChatPage() {
                         value={question}
 
                         onChange={(e) =>
+
                             setQuestion(
                                 e.target.value,
                             )
+
                         }
 
                         onKeyDown={(e) => {
@@ -141,17 +245,19 @@ function ChatPage() {
 
                         }}
 
-                        className="flex-1 rounded-lg border p-3"
-
                         placeholder="Ask anything about this document..."
+
+                        className="flex-1 rounded-xl border p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
 
                     />
 
                     <button
 
-                        onClick={sendQuestion}
+                        onClick={() => sendQuestion()}
 
-                        className="rounded-lg bg-blue-600 px-6 text-white"
+                        disabled={loading}
+
+                        className="rounded-xl bg-blue-600 px-8 text-white hover:bg-blue-700 disabled:bg-gray-400"
 
                     >
 

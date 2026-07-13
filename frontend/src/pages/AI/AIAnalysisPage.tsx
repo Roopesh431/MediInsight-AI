@@ -2,40 +2,134 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import PageContainer from "../../components/layout/PageContainer";
-import { getAnalysis } from "../../services/documentService";
+
+import {
+    getAnalysis,
+} from "../../services/documentService";
+
+import InfoCard from "../../components/ai/InfoCard";
+import SummaryCard from "../../components/ai/SummaryCard";
+import ProcedureTable from "../../components/ai/ProcedureTable";
+import AdviceCard from "../../components/ai/AdviceCard";
+import MedicalTermsCard from "../../components/ai/MedicalTermsCard";
+import SuggestedQuestions from "../../components/ai/SuggestedQuestions";
+
+import Skeleton from "../../components/common/Skeleton";
+
+import toast from "react-hot-toast";
+import { exportAIReport } from "../../utils/pdfExport";
 
 function AIAnalysisPage() {
 
     const { documentId } = useParams();
 
-    const [report, setReport] = useState<any>(null);
+    const [report, setReport] =
+        useState<any>(null);
+
+    const [loading, setLoading] =
+        useState(true);
 
     useEffect(() => {
 
-        async function load() {
+        async function loadReport() {
 
-            const data = await getAnalysis(
-                documentId!,
-            );
+            try {
 
-            setReport(data);
+                const data =
+                    await getAnalysis(
+                        documentId!,
+                    );
+
+                setReport(data);
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                toast.error(
+                    "Unable to load AI report.",
+                );
+
+            }
+
+            finally {
+
+                setLoading(false);
+
+            }
 
         }
 
-        load();
+        loadReport();
 
     }, [documentId]);
+
+    if (loading) {
+
+        return (
+
+            <PageContainer
+                title="🤖 AI Medical Report"
+                subtitle="Generating AI insights..."
+            >
+
+                <div className="space-y-6">
+
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+
+                        <Skeleton className="h-28" />
+                        <Skeleton className="h-28" />
+                        <Skeleton className="h-28" />
+                        <Skeleton className="h-28" />
+
+                    </div>
+
+                    <Skeleton className="h-40" />
+
+                    <Skeleton className="h-72" />
+
+                    <div className="grid lg:grid-cols-2 gap-6">
+
+                        <Skeleton className="h-60" />
+
+                        <Skeleton className="h-60" />
+
+                    </div>
+
+                </div>
+
+            </PageContainer>
+
+        );
+
+    }
 
     if (!report) {
 
         return (
 
             <PageContainer
-                title="🤖 AI Report"
-                subtitle="Loading analysis..."
+                title="🤖 AI Medical Report"
+                subtitle="No report available"
             >
 
-                <p>Loading...</p>
+                <div className="rounded-xl border border-red-200 bg-red-50 p-6">
+
+                    <h2 className="font-semibold text-red-700">
+
+                        Unable to load AI Report
+
+                    </h2>
+
+                    <p className="mt-2 text-gray-600">
+
+                        Please run AI Analysis first.
+
+                    </p>
+
+                </div>
 
             </PageContainer>
 
@@ -46,146 +140,102 @@ function AIAnalysisPage() {
     return (
 
         <PageContainer
-            title="🤖 AI Report"
-            subtitle="AI Medical Analysis"
+            title="🤖 AI Medical Report"
+            subtitle="Generated using MediInsight AI"
         >
 
-            <div className="grid grid-cols-2 gap-5">
+            <div className="flex justify-end mb-6">
 
-                <div className="rounded-xl border bg-white p-5">
+                <button
 
-                    <h3 className="font-semibold">
+                    onClick={() => {
 
-                        Patient
+                        exportAIReport(report);
 
-                    </h3>
+                        toast.success(
+                            "PDF exported successfully!",
+                        );
 
-                    <p>{report.patient_name}</p>
+                    }}
 
-                </div>
+                    className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-white shadow hover:bg-blue-700 transition"
 
-                <div className="rounded-xl border bg-white p-5">
+                >
 
-                    <h3 className="font-semibold">
+                    📄 Export PDF
 
-                        Hospital
-
-                    </h3>
-
-                    <p>{report.hospital}</p>
-
-                </div>
-
-                <div className="rounded-xl border bg-white p-5">
-
-                    <h3 className="font-semibold">
-
-                        Doctor
-
-                    </h3>
-
-                    <p>{report.doctor}</p>
-
-                </div>
-
-                <div className="rounded-xl border bg-white p-5">
-
-                    <h3 className="font-semibold">
-
-                        Total Charges
-
-                    </h3>
-
-                    <p>₹ {report.total_charges}</p>
-
-                </div>
+                </button>
 
             </div>
 
-            <div className="mt-6 rounded-xl border bg-white p-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
 
-                <h2 className="text-xl font-bold mb-4">
+                <InfoCard
+                    title="Patient"
+                    value={report.patient_name ?? "-"}
+                />
 
-                    Summary
+                <InfoCard
+                    title="Hospital"
+                    value={report.hospital ?? "-"}
+                />
 
-                </h2>
+                <InfoCard
+                    title="Doctor"
+                    value={report.doctor ?? "-"}
+                />
 
-                <p>{report.summary}</p>
+                <InfoCard
+                    title="Total Charges"
+                    value={`₹ ${report.total_charges ?? 0}`}
+                />
 
             </div>
 
-            <div className="mt-6 rounded-xl border bg-white p-6">
+            <div className="mt-6">
 
-                <h2 className="text-xl font-bold mb-4">
+                <SummaryCard
+                    summary={
+                        report.summary ??
+                        "No summary available."
+                    }
+                />
 
-                    Procedures
+            </div>
 
-                </h2>
+            <div className="mt-6">
 
-                <table className="w-full">
+                <ProcedureTable
+                    procedures={
+                        report.procedures ?? []
+                    }
+                />
 
-                    <thead>
+            </div>
 
-                        <tr className="border-b">
+            <div className="grid lg:grid-cols-2 gap-6 mt-6">
 
-                            <th className="text-left p-2">
+                <MedicalTermsCard
+                    terms={
+                        report.medical_terms ?? []
+                    }
+                />
 
-                                Date
+                <AdviceCard
+                    advice={
+                        report.patient_advice ?? []
+                    }
+                />
 
-                            </th>
+            </div>
 
-                            <th className="text-left p-2">
+            <div className="mt-6">
 
-                                Code
-
-                            </th>
-
-                            <th className="text-left p-2">
-
-                                Charge
-
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {report.procedures?.map(
-                            (p: any, index: number) => (
-
-                                <tr
-                                    key={index}
-                                    className="border-b"
-                                >
-
-                                    <td className="p-2">
-
-                                        {p.date}
-
-                                    </td>
-
-                                    <td className="p-2">
-
-                                        {p.code}
-
-                                    </td>
-
-                                    <td className="p-2">
-
-                                        ₹ {p.charge}
-
-                                    </td>
-
-                                </tr>
-
-                            ),
-                        )}
-
-                    </tbody>
-
-                </table>
+                <SuggestedQuestions
+                    questions={
+                        report.recommended_questions ?? []
+                    }
+                />
 
             </div>
 

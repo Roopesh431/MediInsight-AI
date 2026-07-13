@@ -1,5 +1,6 @@
 import {
     useEffect,
+    useMemo,
     useState,
 } from "react";
 
@@ -11,17 +12,10 @@ import type {
     Document,
 } from "../../types/document";
 
-import DocumentToolbar
-from "../../components/documents/DocumentToolbar";
-
-import DocumentSearch
-from "../../components/documents/DocumentSearch";
-
-import DocumentCard
-from "../../components/documents/DocumentCard";
-
-import PageContainer
-from "../../components/layout/PageContainer";
+import DocumentToolbar from "../../components/documents/DocumentToolbar";
+import DocumentSearch from "../../components/documents/DocumentSearch";
+import DocumentCard from "../../components/documents/DocumentCard";
+import PageContainer from "../../components/layout/PageContainer";
 
 function DocumentsPage() {
 
@@ -30,6 +24,9 @@ function DocumentsPage() {
 
     const [search, setSearch] =
         useState("");
+
+    const [statusFilter, setStatusFilter] =
+        useState("All");
 
     async function loadDocuments() {
 
@@ -47,41 +44,107 @@ function DocumentsPage() {
     }, []);
 
     const filtered =
-        documents.filter((doc) =>
+        useMemo(() => {
 
-            doc.original_filename
-                .toLowerCase()
-                .includes(
-                    search.toLowerCase(),
-                ),
+            return documents.filter((doc) => {
 
-        );
+                const matchesSearch =
+                    doc.original_filename
+                        .toLowerCase()
+                        .includes(
+                            search.toLowerCase(),
+                        );
+
+                const matchesStatus =
+                    statusFilter === "All"
+                        ? true
+                        : doc.status === statusFilter;
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            });
+
+        }, [
+            documents,
+            search,
+            statusFilter,
+        ]);
 
     return (
 
         <PageContainer
             title="📄 Documents"
-            subtitle="Manage your uploaded medical documents."
+            subtitle="Manage uploaded medical documents"
         >
 
             <DocumentToolbar />
 
-            <DocumentSearch
-                search={search}
-                onSearch={setSearch}
-            />
+            <div className="flex gap-4 mb-6">
+
+                <div className="flex-1">
+
+                    <DocumentSearch
+                        search={search}
+                        onSearch={setSearch}
+                    />
+
+                </div>
+
+                <select
+                    value={statusFilter}
+                    onChange={(e) =>
+                        setStatusFilter(
+                            e.target.value,
+                        )
+                    }
+                    className="rounded-xl border px-4"
+                >
+
+                    <option>All</option>
+                    <option>uploaded</option>
+                    <option>ocr_completed</option>
+                    <option>ai_completed</option>
+
+                </select>
+
+            </div>
 
             <div className="space-y-5">
 
-                {filtered.map((doc) => (
+                {filtered.length === 0 ? (
 
-                    <DocumentCard
-                        key={doc.document_id}
-                        document={doc}
-                        onDelete={loadDocuments}
-                    />
+                    <div className="rounded-xl border border-dashed p-12 text-center bg-white">
 
-                ))}
+                        <div className="text-6xl">
+
+                            📂
+
+                        </div>
+
+                        <h2 className="mt-5 text-xl font-bold">
+
+                            No matching documents
+
+                        </h2>
+
+                    </div>
+
+                ) : (
+
+                    filtered.map((doc) => (
+
+                        <DocumentCard
+                            key={doc.document_id}
+                            document={doc}
+                            onDelete={loadDocuments}
+                        />
+
+                    ))
+
+                )}
 
             </div>
 

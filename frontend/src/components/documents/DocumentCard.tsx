@@ -9,6 +9,8 @@ import {
     deleteDocument,
 } from "../../services/documentService";
 
+import toast from "react-hot-toast";
+
 interface Props {
 
     document: Document;
@@ -40,13 +42,17 @@ function DocumentCard({
 
             await onDelete();
 
+            toast.success(
+                "Document deleted successfully!",
+            );
+
         }
 
         catch (error) {
 
             console.error(error);
 
-            alert("Delete failed.");
+            toast.error("Delete failed.");
 
         }
 

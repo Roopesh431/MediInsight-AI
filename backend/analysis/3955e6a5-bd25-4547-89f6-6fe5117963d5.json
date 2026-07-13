@@ -1,0 +1,47 @@
+{
+    "document_type": "Hospital Bill",
+    "hospital": "MAYO CLINIC",
+    "patient_name": "Jane Doe",
+    "doctor": "Ulrich, Michael D, M.D.",
+    "statement_date": "01/15/25",
+    "total_charges": 612.0,
+    "remaining_balance": 538.56,
+    "procedures": [
+        {
+            "date": "07/03/2024",
+            "code": "99215",
+            "description": "Established Patient Office or Other Outpatient Visit With High Level of Medical Decision Making, if Using Time, 40 Minutes or More",
+            "charge": 462.0
+        },
+        {
+            "date": "07/03/2024",
+            "code": "J0744",
+            "description": "Ciprofloxacin IV",
+            "charge": 150.0
+        }
+    ],
+    "summary": "This document is an itemization of services provided to Jane Doe at Mayo Clinic on July 3, 2024, under the care of Dr. Ulrich, Michael D. The total professional charges for this visit amounted to $612.00. After applying self-pay discounts, a remaining balance of $538.56 is indicated.",
+    "medical_terms": [
+        {
+            "term": "99215",
+            "meaning": "This is a Current Procedural Terminology (CPT) code for an established patient office or other outpatient visit requiring a high level of medical decision making, or lasting 40 minutes or more of total time on the date of the encounter."
+        },
+        {
+            "term": "J0744",
+            "meaning": "This is a Healthcare Common Procedure Coding System (HCPCS) code for the drug Ciprofloxacin, administered intravenously."
+        },
+        {
+            "term": "Ciprofloxacin IV",
+            "meaning": "Ciprofloxacin is a broad-spectrum antibiotic used to treat various bacterial infections. 'IV' indicates that the medication is administered intravenously, meaning directly into a vein."
+        }
+    ],
+    "patient_advice": [
+        "Review the itemized services and charges carefully, cross-referencing them with your own records or visit notes to ensure accuracy.",
+        "Contact Mayo Clinic's billing department directly at 1-844-217-9591 or through their online services if you have questions about this statement or need to discuss payment options."
+    ],
+    "recommended_questions": [
+        "Can you provide a more detailed breakdown or explanation for the 'High Level of Medical Decision Making' associated with the CPT code 99215?",
+        "What specific payment plans or financial assistance programs are available for the remaining balance, and how can I apply for them?"
+    ],
+    "confidence": 0.95
+}

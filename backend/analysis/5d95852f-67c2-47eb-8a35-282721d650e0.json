@@ -1,0 +1,47 @@
+{
+    "document_type": "Hospital Bill",
+    "hospital": "MAYO CLINIC",
+    "patient_name": "Jane Doe",
+    "doctor": "Ulrich, Michael D, M.D.",
+    "statement_date": "01/15/25",
+    "total_charges": 612.0,
+    "remaining_balance": 538.56,
+    "procedures": [
+        {
+            "date": "07/03/2024",
+            "code": "99215",
+            "description": "Established Patient Office or Other Outpatient Visit With High Level of Medical Decision Making, if Using Time, 40 Minutes or More",
+            "charge": 462.0
+        },
+        {
+            "date": "07/03/2024",
+            "code": "J0744",
+            "description": "Ciprofloxacin IV",
+            "charge": 150.0
+        }
+    ],
+    "summary": "This document provides an itemization of professional services for Jane Doe from Mayo Clinic, with a statement date of January 15, 2025. Services rendered on July 3, 2024, by Dr. Michael D. Ulrich, included an established patient office visit and the administration of Ciprofloxacin IV. After applying self-pay discounts, the remaining balance for this visit is $538.56.",
+    "medical_terms": [
+        {
+            "term": "99215",
+            "meaning": "A Current Procedural Terminology (CPT) code for an established patient office or outpatient visit. This code signifies a high level of medical decision making or a visit lasting 40 minutes or more of total time on the date of the encounter."
+        },
+        {
+            "term": "J0744",
+            "meaning": "A Healthcare Common Procedure Coding System (HCPCS) code for Ciprofloxacin, 200 mg. Ciprofloxacin is a broad-spectrum antibiotic medication used to treat a variety of bacterial infections."
+        },
+        {
+            "term": "Ciprofloxacin IV",
+            "meaning": "Ciprofloxacin is a broad-spectrum antibiotic medication. The 'IV' indicates that it is administered intravenously, meaning directly into a patient's vein."
+        }
+    ],
+    "patient_advice": [
+        "Review all itemized charges and descriptions carefully and contact Mayo Clinic customer service if you have any questions about your account.",
+        "Utilize Mayo Clinic Patient Online Services at www.mayoclinic.org/onlineservices to manage your account and make payments securely."
+    ],
+    "recommended_questions": [
+        "Can you clarify why this is an 'itemization of services' and not a 'bill' if there is a remaining balance?",
+        "What specific type of bacterial infection was the Ciprofloxacin IV prescribed or administered for during this visit?"
+    ],
+    "confidence": 0.98
+}
