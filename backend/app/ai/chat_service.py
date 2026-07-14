@@ -1,51 +1,53 @@
-from google import genai
+from backend.app.ai.gemini_service import ask_gemini
 
-from backend.config import settings
 from backend.app.utils.text_storage import load_text
 
-
-CHAT_PROMPT = """
-You are MediInsight AI.
-
-You are an AI medical assistant.
-
-You answer questions ONLY using the provided medical document.
-
-Rules
-
-1. Never invent information.
-
-2. If the answer is not present in the document,
-say:
-
-"I could not find that information in the uploaded document."
-
-3. Explain medical terms in simple language.
-
-4. Keep answers concise.
-
-5. Never provide a diagnosis.
-
-6. Never recommend medications.
-
-7. If asked about billing,
-explain charges only from the document.
-"""
+from backend.app.rag.rag_service import RAGService
 
 
-def chat_with_document(document_id: str, question: str) -> str:
+def chat_with_document(
+    document_id: str,
+    question: str,
+):
 
-    document_text = load_text(document_id)
-
-    client = genai.Client(api_key=settings.GEMINI_API_KEY)
-
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=[
-            CHAT_PROMPT,
-            f"Medical Document:\n{document_text}",
-            f"Question:\n{question}",
-        ],
+    text = load_text(
+        document_id,
     )
 
-    return response.text.strip()
+    rag = RAGService()
+
+    rag.build_index(
+        text,
+    )
+
+    context = rag.retrieve_context(
+        question,
+    )
+
+    prompt = f"""
+You are a medical AI assistant.
+
+Use ONLY the context below to answer.
+
+If the answer is not present, say:
+"I couldn't find that information in the document."
+
+--------------------
+Context
+
+{context}
+
+--------------------
+
+Question:
+
+{question}
+
+Answer:
+"""
+
+    answer = ask_gemini(
+        prompt,
+    )
+
+    return answer
