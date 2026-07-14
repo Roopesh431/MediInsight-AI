@@ -377,13 +377,9 @@ git push origin feature-name
 
 **Lingam Roopesh**
 
-B.Tech – Internet of Things
-
-KL University
-
 GitHub: https://github.com/roopesh431
 
-LinkedIn: *(Add your LinkedIn profile URL here)*
+LinkedIn: https://linkedin.com/in/lingam-roopesh
 
 ---
 
