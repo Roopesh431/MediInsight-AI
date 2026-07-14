@@ -10,44 +10,49 @@ def chat_with_document(
     question: str,
 ):
 
-    text = load_text(
-        document_id,
-    )
-
     rag = RAGService()
 
-    rag.build_index(
-        text,
-    )
-
     context = rag.retrieve_context(
+        document_id,
         question,
     )
 
+    if not context:
+
+        text = load_text(
+            document_id,
+        )
+
+        rag.build_index(
+            document_id,
+            text,
+        )
+
+        context = rag.retrieve_context(
+            document_id,
+            question,
+        )
+
     prompt = f"""
-You are a medical AI assistant.
+You are MediInsight AI.
 
-Use ONLY the context below to answer.
+Answer ONLY from the context.
 
-If the answer is not present, say:
+If the answer is unavailable say:
+
 "I couldn't find that information in the document."
 
---------------------
 Context
 
 {context}
 
---------------------
-
-Question:
+Question
 
 {question}
 
-Answer:
+Answer
 """
 
-    answer = ask_gemini(
+    return ask_gemini(
         prompt,
     )
-
-    return answer
