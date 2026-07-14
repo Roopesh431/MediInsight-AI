@@ -12,6 +12,7 @@ import SettingsPage from "./pages/Settings/SettingsPage";
 import OCRPage from "./pages/OCR/OCRPage";
 import AIAnalysisPage from "./pages/AI/AIAnalysisPage";
 import ChatPage from "./pages/chat/ChatPage";
+import TimelinePage from "./pages/Timeline/TimelinePage";
 
 function App() {
 
@@ -32,6 +33,11 @@ function App() {
                 <Route
                     path="documents"
                     element={<DocumentsPage />}
+                />
+
+                <Route
+                    path="timeline"
+                    element={<TimelinePage />}
                 />
 
                 <Route
