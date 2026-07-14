@@ -7,6 +7,7 @@ import {
     FiFileText,
     FiClock,
     FiSettings,
+    FiGitBranch,
 } from "react-icons/fi";
 
 function Sidebar() {
@@ -23,6 +24,12 @@ function Sidebar() {
             name: "Documents",
             path: "/documents",
             icon: <FiFileText />,
+        },
+
+        {
+            name: "Timeline",
+            path: "/timeline",
+            icon: <FiGitBranch />,
         },
 
         {

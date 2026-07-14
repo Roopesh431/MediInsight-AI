@@ -120,3 +120,14 @@ def analyze_with_gemini(text: str) -> dict:
         return {
             "error": str(e)
         }
+        
+def ask_gemini(
+    prompt: str,
+):
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
+    )
+
+    return response.text

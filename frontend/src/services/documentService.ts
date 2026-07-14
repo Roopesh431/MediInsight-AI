@@ -107,3 +107,13 @@ export async function deleteDocument(
     return response.data;
 
 }
+
+export async function getTimeline() {
+
+    const response = await api.get(
+        "/timeline",
+    );
+
+    return response.data;
+
+}
