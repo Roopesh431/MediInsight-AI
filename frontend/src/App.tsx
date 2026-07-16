@@ -13,6 +13,7 @@ import OCRPage from "./pages/OCR/OCRPage";
 import AIAnalysisPage from "./pages/AI/AIAnalysisPage";
 import ChatPage from "./pages/chat/ChatPage";
 import TimelinePage from "./pages/Timeline/TimelinePage";
+import ComparisonPage from "./pages/comparison/ComparisonPage";
 
 function App() {
 
@@ -38,6 +39,11 @@ function App() {
                 <Route
                     path="timeline"
                     element={<TimelinePage />}
+                />
+
+                <Route
+                    path="comparison"
+                    element={<ComparisonPage />}
                 />
 
                 <Route

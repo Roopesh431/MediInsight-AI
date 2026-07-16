@@ -12,6 +12,7 @@ class Settings:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
     OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
     AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")
+    
 
 
 settings = Settings()

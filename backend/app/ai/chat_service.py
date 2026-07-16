@@ -1,4 +1,4 @@
-from backend.app.ai.gemini_service import ask_gemini
+from backend.app.ai.provider_factory import chat
 
 from backend.app.utils.text_storage import load_text
 
@@ -53,6 +53,6 @@ Question
 Answer
 """
 
-    return ask_gemini(
+    return chat(
         prompt,
     )
