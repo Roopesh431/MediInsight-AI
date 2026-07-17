@@ -1,63 +1,55 @@
 interface Props {
-
     title: string;
-
     value: string | number;
-
     icon: string;
-
     color: string;
-
 }
 
 function StatsCard({
-
     title,
-
     value,
-
     icon,
-
     color,
-
 }: Props) {
 
     return (
+        <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl">
 
-        <div className="rounded-2xl bg-white shadow-sm border p-6 hover:shadow-lg transition">
+            {/* Decorative Gradient */}
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-emerald-500" />
 
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
 
-                <div>
+                <div className="flex-1">
 
-                    <p className="text-gray-500 text-sm">
-
+                    <p className="text-sm font-medium uppercase tracking-wide text-slate-500">
                         {title}
-
                     </p>
 
-                    <h2 className="text-3xl font-bold mt-2">
-
+                    <h2 className="mt-3 text-4xl font-bold text-slate-800">
                         {value}
-
                     </h2>
+
+                    <div className="mt-4 flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+
+                        <span className="text-xs font-medium text-slate-500">
+                            Updated just now
+                        </span>
+                    </div>
 
                 </div>
 
                 <div
-                    className={`text-4xl ${color}`}
+                    className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-100 text-4xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 ${color}`}
                 >
-
                     {icon}
-
                 </div>
 
             </div>
 
         </div>
-
     );
-
 }
 
 export default StatsCard;

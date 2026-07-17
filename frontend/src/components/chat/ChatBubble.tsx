@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import toast from "react-hot-toast";
 
 import type {
     ChatMessage,
@@ -20,6 +21,36 @@ function ChatBubble({
 
         message.role === "user";
 
+    async function copyMessage() {
+
+        try {
+
+            await navigator.clipboard.writeText(
+
+                message.content,
+
+            );
+
+            toast.success(
+
+                "Copied to clipboard!",
+
+            );
+
+        }
+
+        catch {
+
+            toast.error(
+
+                "Unable to copy.",
+
+            );
+
+        }
+
+    }
+
     return (
 
         <div
@@ -38,11 +69,33 @@ function ChatBubble({
                 }`}
             >
 
-                <div className="mb-3 text-xs font-semibold">
+                <div className="mb-3 flex items-center justify-between">
 
-                    {isUser
-                        ? "👤 You"
-                        : "🤖 MediInsight AI"}
+                    <span className="text-xs font-semibold">
+
+                        {isUser
+                            ? "👤 You"
+                            : "🤖 MediInsight AI"}
+
+                    </span>
+
+                    {!isUser && (
+
+                        <button
+
+                            onClick={copyMessage}
+
+                            className="rounded-md border px-2 py-1 text-xs hover:bg-gray-100 transition"
+
+                            title="Copy response"
+
+                        >
+
+                            📋
+
+                        </button>
+
+                    )}
 
                 </div>
 

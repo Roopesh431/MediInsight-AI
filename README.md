@@ -1,398 +1,231 @@
+<div align="center">
+
 # 🏥 MediInsight AI
 
-> An AI-powered medical document analysis platform that extracts, analyzes, summarizes, and enables intelligent interaction with medical documents using OCR and Large Language Models.
+**Turn medical documents into answers — not paperwork.**
 
-MediInsight AI transforms hospital bills, prescriptions, laboratory reports, discharge summaries, and other medical documents into structured, easy-to-understand information using **PaddleOCR** and **Google Gemini 2.5 Flash**.
+Upload a hospital bill, prescription, or lab report and get an instant OCR
+extraction, an AI-generated plain-language summary, and a chat assistant
+that can answer questions about it — grounded in the document itself.
 
----
+[Features](#-features) · [Architecture](#-architecture) · [Getting Started](#-getting-started) · [Roadmap](#-roadmap)
 
-# 🚀 Project Progress
-
-```text
-Backend         ████████████████████ 100%
-
-Frontend        ███████████████████░ 95%
-
-AI Integration  ████████████████████ 100%
-
-OCR Pipeline    ████████████████████ 100%
-
-Database        ████████████████████ 100%
-
-RAG Pipeline    ███████████████████░ 95%
-
-Authentication  ░░░░░░░░░░░░░░░░░░░░   0%
-
-Deployment      ░░░░░░░░░░░░░░░░░░░░   0%
-
-Testing         █████████████████░░░ 85%
-
-Documentation   ██████████████████░░ 90%
-```
+</div>
 
 ---
 
-# ✨ Features
+## 🚧 Project Status: Working Prototype (v1.1)
 
-## 📄 Document Processing
+This is a functioning end-to-end prototype, not a finished product. The
+core pipeline — upload → OCR → AI analysis → chat — works reliably. Some
+pieces (auth, deployment, comparison/timeline polish) are still in progress.
+Treat this as an active build-in-public project, not a v1.0 release.
 
-- Upload PDF medical documents
-- Automatic OCR text extraction
-- Structured document parsing
-- Local document storage
-- Document history
+| Layer               | Status          |
+|---------------------|-----------------|
+| Backend API         | ✅ Working       |
+| OCR Pipeline        | ✅ Working       |
+| AI Analysis         | ✅ Working       |
+| RAG-based Chat      | ✅ Working       |
+| Dashboard / UI      | ✅ Working       |
+| Document Comparison | 🚧 In progress   |
+| Medical Timeline    | 🚧 In progress   |
+| Authentication      | ⬜ Not started   |
+| Deployment          | ⬜ Not started   |
 
 ---
 
-## 🤖 AI Analysis
+## ✨ Features
 
-- AI-generated medical summary
-- Procedure extraction
-- Medical terminology explanation
-- Patient-friendly advice
+### 📄 Document Processing
+- PDF upload with validation, hashing, and unique storage
+- OCR text extraction (Tesseract + Poppler)
+- Persistent document history via SQLite
+
+### 🤖 AI Analysis
+- Structured medical report generation: patient, hospital, doctor, procedures, financials
+- Plain-language summaries and medical term explanations
 - Suggested follow-up questions
-- Confidence score
-- Hospital information extraction
-- Doctor information extraction
-- Billing information extraction
+- Financial figures cross-validated against the OCR text to prevent AI arithmetic drift
 
----
+### 💬 AI Chat Assistant
+- Retrieval-augmented chat (FAISS + sentence-transformers) grounded in the uploaded document
+- Falls back to general medical knowledge when the document doesn't have the answer — clearly labeled as such
+- Multi-provider AI Gateway with automatic failover (see [Architecture](#-architecture))
 
-## 💬 AI Assistant
-
-- Ask questions about uploaded reports
-- Context-aware document chat
-- Explain medical terminology
-- Answer billing-related questions
-- Summarize reports
-
----
-
-## 📊 Dashboard
-
-- Dashboard statistics
-- Upload workflow
-- Processing status
-- Confidence indicators
-- Recent documents
-
----
-
-## 📂 Document Management
-
-- Search documents
-- Filter documents
-- Delete documents
-- OCR Viewer
-- AI Report Viewer
-- Processing History
-
----
-
-## 📑 Export
-
+### 📊 Dashboard & Document Management
+- Upload workflow with live processing status
+- Search, filter, and delete documents
+- OCR and AI report viewers
 - Export AI report as PDF
 
 ---
 
-# 🛠 Tech Stack
-
-## Frontend
-
-- React
-- TypeScript
-- Tailwind CSS
-- React Router
-- Axios
-- React Hot Toast
-- jsPDF
-
----
-
-## Backend
-
-- FastAPI
-- SQLAlchemy
-- SQLite
-- Pydantic
-
----
-
-## Artificial Intelligence
-
-- Google Gemini 2.5 Flash
-- PaddleOCR
-- pdf2image
-- Poppler
-- Tesseract (optional support)
-
----
-
-# 📸 Screenshots
-
-## Dashboard
-
-![Dashboard](screenshots/dashboard.png)
-
----
-
-## Upload Workflow
-
-![Upload](screenshots/upload.png)
-
----
-
-## Documents
-
-![Documents](screenshots/documents.png)
-
----
-
-## OCR Result
-
-![OCR](screenshots/ocr.png)
-
----
-
-## AI Medical Report
-
-![AI Report](screenshots/ai-report.png)
-
----
-
-## AI Chat Assistant
-
-![Chat](screenshots/chat.png)
-
----
-
-## History
-
-![History](screenshots/history.png)
-
----
-
-## Settings
-
-![Settings](screenshots/settings.png)
-
----
-
-# 🏗 System Architecture
+## 🏗 Architecture
 
 ```
-                    React + TypeScript
-                           │
-                           ▼
-                   FastAPI REST API
-                           │
-          ┌────────────────┼────────────────┐
-          ▼                ▼                ▼
-      SQLite DB       PaddleOCR      Gemini 2.5 Flash
-          │                │                │
-          └────────────┬───┴────────────────┘
-                       ▼
-                AI Medical Report
-                       │
-         ┌─────────────┼──────────────┐
-         ▼             ▼              ▼
-      OCR View     AI Chat      PDF Export
+                        React + TypeScript (Vite)
+                                 │
+                                 ▼
+                        FastAPI REST API
+                                 │
+              ┌──────────────────┼──────────────────┐
+              ▼                  ▼                   ▼
+          SQLite DB      OCR (Tesseract +      AI Gateway
+                          Poppler)             ┌──────────┐
+                                                │  Groq    │→ primary
+                                                │  Gemini  │→ fallback
+                                                │OpenRouter│→ fallback
+                                                └──────────┘
+                                 │
+                                 ▼
+                      FAISS + Sentence-Transformers
+                          (RAG for document chat)
+                                 │
+              ┌──────────────────┼──────────────────┐
+              ▼                  ▼                   ▼
+          OCR Viewer      AI Chat Assistant     PDF Export
 ```
+
+**Why an AI Gateway?** Analysis and chat run through a provider-agnostic
+interface with automatic failover across Groq, Gemini, and OpenRouter. If
+one provider is rate-limited or down, the request transparently retries on
+the next — the rest of the app never knows which model actually answered.
 
 ---
 
-# 📁 Project Structure
+## 🛠 Tech Stack
+
+**Frontend** — React · TypeScript · Tailwind CSS · React Router · Axios · React Hot Toast · jsPDF
+
+**Backend** — FastAPI · SQLAlchemy · SQLite · Pydantic
+
+**AI / OCR** — Groq · Google Gemini 2.5 Flash · OpenRouter · Tesseract OCR · pdf2image / Poppler · FAISS · Sentence-Transformers
+
+---
+
+## 📸 Screenshots
+
+| Dashboard | Upload Workflow | Documents |
+|---|---|---|
+| ![Dashboard](screenshots/dashboard.png) | ![Upload](screenshots/upload.png) | ![Documents](screenshots/documents.png) |
+
+| OCR Result | AI Medical Report | Chat Assistant |
+|---|---|---|
+| ![OCR](screenshots/ocr.png) | ![AI Report](screenshots/ai-report.png) | ![Chat](screenshots/chat.png) |
+
+---
+
+## 📁 Project Structure
 
 ```
-MediInsight-AI
-
-├── backend
-│   ├── ai
-│   ├── api
-│   ├── database
-│   ├── schemas
-│   ├── services
-│   ├── utils
-│   ├── uploads
-│   ├── extracted_text
-│   ├── analysis
-│   └── app.py
-│
-├── frontend
-│   ├── components
-│   ├── pages
-│   ├── services
-│   ├── types
-│   ├── utils
-│   └── assets
-│
-├── screenshots
-│
-├── README.md
+MediInsight-AI/
+├── backend/
+│   └── app/
+│       ├── ai/            # AI Gateway: provider classes, prompts, response parsing
+│       ├── api/            # FastAPI routes
+│       ├── database/       # SQLAlchemy models, CRUD
+│       ├── ocr/             # OCR extraction
+│       ├── rag/            # Chunking, embeddings, FAISS vector store
+│       ├── schemas/        # Pydantic schemas
+│       ├── services/       # Business logic (parsing, validation, pipeline)
+│       └── utils/
+├── frontend/
+│   └── src/
+│       ├── components/     # dashboard, ai, chat, documents, comparison, timeline
+│       ├── pages/
+│       ├── services/       # API client
+│       └── types/
 ├── requirements.txt
-└── package.json
+└── frontend/package.json
 ```
 
 ---
 
-# ⚙️ Installation
+## ⚙️ Getting Started
 
-## Clone Repository
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- Tesseract OCR and Poppler installed and on your PATH
 
-```bash
-git clone https://github.com/<your-username>/MediInsight-AI.git
-
-cd MediInsight-AI
-```
-
----
-
-## Backend Setup
+### Backend
 
 ```bash
 cd backend
-
 python -m venv .venv
-
-.venv\Scripts\activate
-
+.venv\Scripts\activate        # Windows
 pip install -r requirements.txt
+
+# Add your API keys to backend/.env (see backend/.env.example)
 
 uvicorn backend.app.main:app --reload
 ```
 
-Backend runs on
+Backend: `http://127.0.0.1:8000` · Swagger docs: `http://127.0.0.1:8000/docs`
 
-```
-http://127.0.0.1:8000
-```
-
-Swagger
-
-```
-http://127.0.0.1:8000/docs
-```
-
----
-
-## Frontend Setup
+### Frontend
 
 ```bash
 cd frontend
-
 npm install
-
 npm run dev
 ```
 
-Frontend
-
-```
-http://localhost:5173
-```
+Frontend: `http://localhost:5173`
 
 ---
 
-# 📌 Version 1.0 Completed
+## 🗺 Roadmap
 
-- PDF Upload
-- OCR Extraction
-- AI Medical Report
-- AI Chat
-- Dashboard
-- Document History
-- Search & Filter
-- PDF Export
-- Medical Term Explanation
-- Suggested Questions
-- Responsive Dashboard Layout
-- SQLite Integration
+**Now (v1.1)**
+- [ ] Document comparison polish
+- [ ] Medical timeline view
+- [ ] Dark mode
+- [ ] Mobile responsive pass
 
----
+**Next (v1.2)**
+- [ ] User authentication and profiles
+- [ ] Report versioning
+- [ ] Cloud storage for uploads
+- [ ] Deployment (Docker + cloud hosting)
 
-# 🗺 Roadmap
-
-## Version 1.1
-
-- User Authentication
-- User Profiles
-- Cloud Storage
-- Mobile Responsive Improvements
-- Dark Mode
-- Better PDF Styling
+**Later (v2.0)**
+- [ ] Doctor / patient dashboards
+- [ ] Multi-language OCR
+- [ ] Medical image analysis (DICOM support)
+- [ ] Voice assistant
+- [ ] Hospital integration APIs
 
 ---
 
-## Version 1.2
-
-- RAG-based Chat using Vector Database
-- Semantic Search
-- Medical Timeline
-- Multiple Report Comparison
-- Report Versioning
-- Better AI Report Formatting
-
----
-
-## Version 2.0
-
-- Doctor Dashboard
-- Patient Dashboard
-- Appointment Integration
-- Multi-language OCR
-- DICOM Image Support
-- Medical Image Analysis
-- Voice Assistant
-- Multi-user Workspace
-- Hospital Integration APIs
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome.
-
-1. Fork the repository
-2. Create a feature branch
+## 🤝 Contributing
 
 ```bash
 git checkout -b feature-name
-```
-
-3. Commit changes
-
-```bash
 git commit -m "Add feature"
-```
-
-4. Push changes
-
-```bash
 git push origin feature-name
 ```
 
-5. Open a Pull Request
+Then open a Pull Request.
 
 ---
 
-# 👨‍💻 Author
+## 👨‍💻 Author
 
 **Lingam Roopesh**
-
-GitHub: https://github.com/roopesh431
-
-LinkedIn: https://linkedin.com/in/lingam-roopesh
+[GitHub](https://github.com/roopesh431) · [LinkedIn](https://linkedin.com/in/lingam-roopesh)
 
 ---
 
-# 📄 License
+## 📄 License
 
-This project is released under the MIT License.
+MIT License.
 
 ---
 
-# ⭐ Support
+<div align="center">
 
-If you found this project useful, please consider giving it a ⭐ on GitHub.
+If this project is useful to you, consider giving it a ⭐ on GitHub.
 
-Feedback, suggestions, and contributions are always welcome.
+</div>

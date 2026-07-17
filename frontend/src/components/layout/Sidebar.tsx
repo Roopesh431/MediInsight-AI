@@ -10,6 +10,10 @@ import {
     FiGitBranch,
 } from "react-icons/fi";
 
+import {
+    BsArrowLeftRight,
+} from "react-icons/bs";
+
 function Sidebar() {
 
     const menuItems = [
@@ -30,6 +34,12 @@ function Sidebar() {
             name: "Timeline",
             path: "/timeline",
             icon: <FiGitBranch />,
+        },
+
+        {
+            name: "Comparison",
+            path: "/comparison",
+            icon: <BsArrowLeftRight />,
         },
 
         {

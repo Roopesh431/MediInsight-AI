@@ -6,6 +6,7 @@ import {
 
 import {
     useParams,
+    useLocation,
 } from "react-router-dom";
 
 import PageContainer from "../../components/layout/PageContainer";
@@ -27,27 +28,34 @@ function ChatPage() {
 
     const { documentId } = useParams();
 
-    const [question, setQuestion] =
-        useState("");
+    const location = useLocation();
 
-    const [messages, setMessages] =
-        useState<ChatMessage[]>([]);
+    const [question, setQuestion] = useState("");
 
-    const [loading, setLoading] =
-        useState(false);
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-    const bottomRef =
-        useRef<HTMLDivElement>(null);
+    const [loading, setLoading] = useState(false);
+
+    const bottomRef = useRef<HTMLDivElement>(null);
+
+    // Prevent duplicate automatic requests
+    const autoAsked = useRef(false);
 
     useEffect(() => {
 
         bottomRef.current?.scrollIntoView({
+
             behavior: "smooth",
+
         });
 
     }, [messages, loading]);
 
-    async function sendQuestion(customQuestion?: string) {
+    async function sendQuestion(
+        customQuestion?: string,
+    ) {
+
+        if (loading) return;
 
         const currentQuestion =
             customQuestion ?? question;
@@ -62,7 +70,7 @@ function ChatPage() {
 
         };
 
-        setMessages(prev => [
+        setMessages((prev) => [
 
             ...prev,
 
@@ -76,8 +84,11 @@ function ChatPage() {
 
             const response =
                 await chatWithDocument(
+
                     documentId!,
+
                     currentQuestion,
+
                 );
 
             const aiMessage: ChatMessage = {
@@ -88,7 +99,7 @@ function ChatPage() {
 
             };
 
-            setMessages(prev => [
+            setMessages((prev) => [
 
                 ...prev,
 
@@ -106,7 +117,7 @@ function ChatPage() {
                 "Unable to contact AI.",
             );
 
-            setMessages(prev => [
+            setMessages((prev) => [
 
                 ...prev,
 
@@ -132,6 +143,29 @@ function ChatPage() {
         }
 
     }
+
+    useEffect(() => {
+
+        const selectedQuestion =
+            (location.state as any)?.question;
+
+        if (
+
+            selectedQuestion &&
+
+            !autoAsked.current
+
+        ) {
+
+            autoAsked.current = true;
+
+            setQuestion(selectedQuestion);
+
+            sendQuestion(selectedQuestion);
+
+        }
+
+    }, [location.state]);
 
     return (
 
@@ -230,14 +264,22 @@ function ChatPage() {
                         onChange={(e) =>
 
                             setQuestion(
+
                                 e.target.value,
+
                             )
 
                         }
 
                         onKeyDown={(e) => {
 
-                            if (e.key === "Enter") {
+                            if (
+
+                                e.key === "Enter" &&
+
+                                !loading
+
+                            ) {
 
                                 sendQuestion();
 

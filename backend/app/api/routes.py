@@ -8,6 +8,9 @@ from backend.app.api.rag_routes import router as rag_router
 from backend.app.api.timeline_routes import (
     router as timeline_router,
 )
+from backend.app.api.comparison_routes import (
+    router as comparison_router,
+)
 
 router = APIRouter()
 
@@ -20,4 +23,7 @@ router.include_router(
 )
 router.include_router(
     timeline_router,
+)
+router.include_router(
+    comparison_router,
 )

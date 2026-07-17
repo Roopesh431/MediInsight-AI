@@ -22,6 +22,9 @@ function DocumentsPage() {
     const [documents, setDocuments] =
         useState<Document[]>([]);
 
+    const [loading, setLoading] =
+        useState(true);
+
     const [search, setSearch] =
         useState("");
 
@@ -30,10 +33,24 @@ function DocumentsPage() {
 
     async function loadDocuments() {
 
-        const data =
-            await getDocuments();
+        try {
 
-        setDocuments(data);
+            setLoading(true);
+
+            const data =
+                await getDocuments();
+
+            setDocuments(data);
+
+        } catch (error) {
+
+            console.error(error);
+
+        } finally {
+
+            setLoading(false);
+
+        }
 
     }
 
@@ -82,7 +99,7 @@ function DocumentsPage() {
 
             <DocumentToolbar />
 
-            <div className="flex gap-4 mb-6">
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
 
                 <div className="flex-1">
 
@@ -100,7 +117,7 @@ function DocumentsPage() {
                             e.target.value,
                         )
                     }
-                    className="rounded-xl border px-4"
+                    className="rounded-xl border bg-white px-4 py-3 shadow-sm"
                 >
 
                     <option>All</option>
@@ -112,41 +129,111 @@ function DocumentsPage() {
 
             </div>
 
-            <div className="space-y-5">
+            {/* Summary */}
 
-                {filtered.length === 0 ? (
+            <div className="mb-6 rounded-2xl border bg-white p-4 shadow-sm">
 
-                    <div className="rounded-xl border border-dashed p-12 text-center bg-white">
+                <div className="flex flex-wrap gap-6">
 
-                        <div className="text-6xl">
+                    <div>
 
-                            📂
+                        <p className="text-sm text-gray-500">
 
-                        </div>
+                            Total Documents
 
-                        <h2 className="mt-5 text-xl font-bold">
+                        </p>
 
-                            No matching documents
+                        <p className="text-2xl font-bold">
 
-                        </h2>
+                            {documents.length}
+
+                        </p>
 
                     </div>
 
-                ) : (
+                    <div>
 
-                    filtered.map((doc) => (
+                        <p className="text-sm text-gray-500">
 
-                        <DocumentCard
-                            key={doc.document_id}
-                            document={doc}
-                            onDelete={loadDocuments}
-                        />
+                            Showing
 
-                    ))
+                        </p>
 
-                )}
+                        <p className="text-2xl font-bold">
+
+                            {filtered.length}
+
+                        </p>
+
+                    </div>
+
+                </div>
 
             </div>
+
+            {loading ? (
+
+                <div className="rounded-2xl bg-white border p-12 text-center">
+
+                    <div className="animate-spin text-5xl">
+
+                        🏥
+
+                    </div>
+
+                    <p className="mt-5 text-gray-500">
+
+                        Loading documents...
+
+                    </p>
+
+                </div>
+
+            ) : (
+
+                <div className="space-y-5">
+
+                    {filtered.length === 0 ? (
+
+                        <div className="rounded-xl border border-dashed bg-white p-12 text-center">
+
+                            <div className="text-6xl">
+
+                                📂
+
+                            </div>
+
+                            <h2 className="mt-5 text-xl font-bold">
+
+                                No matching documents
+
+                            </h2>
+
+                            <p className="mt-2 text-gray-500">
+
+                                Try changing your search or upload a new medical bill.
+
+                            </p>
+
+                        </div>
+
+                    ) : (
+
+                        filtered.map((doc) => (
+
+                            <DocumentCard
+                                key={doc.document_id}
+                                document={doc}
+                                onDelete={loadDocuments}
+                            />
+
+                        ))
+
+                    )}
+
+                </div>
+
+            )}
 
         </PageContainer>
 

@@ -1,18 +1,44 @@
+import { useNavigate } from "react-router-dom";
+
 interface Props {
-
+    documentId: string;
     questions: string[];
-
 }
 
 function SuggestedQuestions({
+    documentId,
     questions,
 }: Props) {
+
+    const navigate = useNavigate();
+
+    function handleClick(
+        question: string,
+    ) {
+
+        navigate(
+
+            `/chat/${documentId}`,
+
+            {
+
+                state: {
+
+                    question,
+
+                },
+
+            },
+
+        );
+
+    }
 
     return (
 
         <div className="rounded-xl border bg-white p-6 shadow-sm">
 
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="mb-4 text-xl font-bold">
 
                 ❓ Suggested Questions
 
@@ -21,6 +47,7 @@ function SuggestedQuestions({
             <div className="flex flex-wrap gap-3">
 
                 {questions?.map(
+
                     (
                         question,
                         index,
@@ -28,7 +55,8 @@ function SuggestedQuestions({
 
                         <button
                             key={index}
-                            className="rounded-full bg-blue-100 px-4 py-2 text-blue-700"
+                            onClick={() => handleClick(question)}
+                            className="rounded-full bg-blue-100 px-4 py-2 text-blue-700 transition hover:bg-blue-200"
                         >
 
                             {question}
@@ -36,6 +64,7 @@ function SuggestedQuestions({
                         </button>
 
                     ),
+
                 )}
 
             </div>
