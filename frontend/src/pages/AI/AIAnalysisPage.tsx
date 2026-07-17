@@ -232,6 +232,7 @@ function AIAnalysisPage() {
             <div className="mt-6">
 
                 <SuggestedQuestions
+                    documentId={documentId!}
                     questions={
                         report.recommended_questions ?? []
                     }

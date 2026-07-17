@@ -1,34 +1,45 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+
 def chunk_text(
     text: str,
-    chunk_size: int = 1000,
-    chunk_overlap: int = 200,
 ) -> list[str]:
-    """
-    Split OCR text into overlapping chunks for RAG.
-    """
 
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap,
+
+        chunk_size=350,
+
+        chunk_overlap=50,
+
         separators=[
+
             "\n\n",
+
             "\n",
+
             ". ",
+
+            ": ",
+
             " ",
+
             "",
+
         ],
+
     )
 
-    chunks = splitter.split_text(text)
-
     return [
-        chunk.strip()
-        for chunk in chunks
-        if chunk.strip()
-    ]
 
+        chunk.strip()
+
+        for chunk in splitter.split_text(text)
+
+        if chunk.strip()
+
+    ]
 
 if __name__ == "__main__":
 

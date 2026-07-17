@@ -58,14 +58,27 @@ def ai_analyze(
         text,
     )
 
+    if isinstance(
+        result,
+        dict,
+    ):
+
+        raise HTTPException(
+            status_code=500,
+            detail=result.get(
+                "error",
+                "AI analysis failed.",
+            ),
+        )
+
+    analysis_data = result.model_dump()
+
     analysis_path = save_analysis(
         document.document_id,
-        result.model_dump(),
+        analysis_data,
     )
 
-    print("Analysis Path:", analysis_path)
-
-    update_document(
+    updated = update_document(
         db,
         document.document_id,
         document_type=result.document_type,
@@ -74,19 +87,12 @@ def ai_analyze(
         analysis_json_path=analysis_path,
     )
 
-    updated = update_document(
-    db,
-    document.document_id,
-    document_type=result.document_type,
-    confidence=result.confidence,
-    status="ai_completed",
-    analysis_json_path=analysis_path,
-)
-
-    print("Saved Path:", updated.analysis_json_path)
+    print(
+        "Saved Path:",
+        updated.analysis_json_path,
+    )
 
     return result
-
 
 
 @router.get("/{document_id}/analysis")

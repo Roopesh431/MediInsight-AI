@@ -5,18 +5,13 @@ import ConfidenceBadge from "../common/ConfidenceBadge";
 
 import { useNavigate } from "react-router-dom";
 
-import {
-    deleteDocument,
-} from "../../services/documentService";
+import { deleteDocument } from "../../services/documentService";
 
 import toast from "react-hot-toast";
 
 interface Props {
-
     document: Document;
-
     onDelete: () => Promise<void>;
-
 }
 
 function DocumentCard({
@@ -29,30 +24,28 @@ function DocumentCard({
     async function handleDelete() {
 
         const confirmed = window.confirm(
-            "Are you sure you want to delete this document?",
+            `Delete "${document.original_filename}"?`,
         );
 
         if (!confirmed) return;
 
         try {
 
-            await deleteDocument(
-                document.document_id,
-            );
+            await deleteDocument(document.document_id);
 
             await onDelete();
 
             toast.success(
-                "Document deleted successfully!",
+                "Document deleted successfully.",
             );
 
-        }
-
-        catch (error) {
+        } catch (error) {
 
             console.error(error);
 
-            toast.error("Delete failed.");
+            toast.error(
+                "Unable to delete the document.",
+            );
 
         }
 
@@ -60,33 +53,39 @@ function DocumentCard({
 
     return (
 
-        <div className="rounded-xl border bg-white p-6 shadow">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 
-            <div className="flex justify-between">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
 
-                <div>
+                {/* Left */}
 
-                    <h2 className="font-semibold text-lg">
+                <div className="flex-1">
 
-                        📄 {document.original_filename}
+                    <div className="flex items-center gap-3">
 
-                    </h2>
+                        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-100 text-3xl">
+                            📄
+                        </div>
 
-                    <div className="mt-2">
+                        <div>
+
+                            <h2 className="text-xl font-bold text-slate-800 break-all">
+                                {document.original_filename}
+                            </h2>
+
+                            <p className="mt-1 text-sm text-slate-500">
+                                Medical Document
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div className="mt-6 flex flex-wrap gap-3">
 
                         <StatusBadge
                             status={document.status}
                         />
-
-                    </div>
-
-                    <p className="mt-3">
-
-                        Type: {document.document_type}
-
-                    </p>
-
-                    <div className="mt-3">
 
                         <ConfidenceBadge
                             confidence={document.confidence}
@@ -94,59 +93,75 @@ function DocumentCard({
 
                     </div>
 
+                    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                        <div>
+
+                            <p className="text-xs uppercase tracking-wide text-slate-500">
+                                Document Type
+                            </p>
+
+                            <p className="font-semibold text-slate-700">
+                                {document.document_type || "Unknown"}
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <p className="text-xs uppercase tracking-wide text-slate-500">
+                                Document ID
+                            </p>
+
+                            <p className="font-mono text-sm text-slate-700 break-all">
+                                {document.document_id}
+                            </p>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-            </div>
+                {/* Right */}
 
-            <div className="flex gap-3 mt-6 flex-wrap">
+                <div className="flex flex-col gap-3 lg:w-56">
 
-                <button
-                    onClick={() =>
-                        navigate(
-                            `/ocr/${document.document_id}`,
-                        )
-                    }
-                    className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-                >
+                    <button
+                        onClick={() =>
+                            navigate(`/ocr/${document.document_id}`)
+                        }
+                        className="rounded-xl bg-blue-600 px-4 py-3 font-medium text-white transition hover:bg-blue-700"
+                    >
+                        📝 View OCR
+                    </button>
 
-                    OCR
+                    <button
+                        onClick={() =>
+                            navigate(`/ai/${document.document_id}`)
+                        }
+                        className="rounded-xl bg-emerald-600 px-4 py-3 font-medium text-white transition hover:bg-emerald-700"
+                    >
+                        🤖 AI Analysis
+                    </button>
 
-                </button>
+                    <button
+                        onClick={() =>
+                            navigate(`/chat/${document.document_id}`)
+                        }
+                        className="rounded-xl bg-violet-600 px-4 py-3 font-medium text-white transition hover:bg-violet-700"
+                    >
+                        💬 AI Chat
+                    </button>
 
-                <button
-                    onClick={() =>
-                        navigate(
-                            `/ai/${document.document_id}`,
-                        )
-                    }
-                    className="rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700"
-                >
+                    <button
+                        onClick={handleDelete}
+                        className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 font-medium text-red-700 transition hover:bg-red-100"
+                    >
+                        🗑 Delete
+                    </button>
 
-                    AI Report
-
-                </button>
-
-                <button
-                    onClick={() =>
-                        navigate(
-                            `/chat/${document.document_id}`,
-                        )
-                    }
-                    className="rounded-lg bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
-                >
-
-                    Chat
-
-                </button>
-
-                <button
-                    onClick={handleDelete}
-                    className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
-                >
-
-                    Delete
-
-                </button>
+                </div>
 
             </div>
 

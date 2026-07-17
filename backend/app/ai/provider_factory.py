@@ -1,57 +1,17 @@
-from backend.config import settings
+from backend.app.ai.ai_manager import AIManager
 
-from backend.app.ai.gemini_service import (
-    analyze_with_gemini,
-    ask_gemini,
-)
-
-from backend.app.ai.openrouter_service import (
-    analyze_with_openrouter,
-    ask_openrouter,
-)
+_manager = AIManager()
 
 
-def analyze(
-    text: str,
-):
-
-    provider = settings.AI_PROVIDER.lower()
-
-    if provider == "gemini":
-
-        return analyze_with_gemini(
-            text,
-        )
-
-    if provider == "openrouter":
-
-        return analyze_with_openrouter(
-            text,
-        )
-
-    raise ValueError(
-        "Invalid AI Provider.",
-    )
+def analyze(text: str):
+    """
+    Analyze a medical document using the AI Gateway.
+    """
+    return _manager.analyze(text)
 
 
-def chat(
-    prompt: str,
-):
-
-    provider = settings.AI_PROVIDER.lower()
-
-    if provider == "gemini":
-
-        return ask_gemini(
-            prompt,
-        )
-
-    if provider == "openrouter":
-
-        return ask_openrouter(
-            prompt,
-        )
-
-    raise ValueError(
-        "Invalid AI Provider.",
-    )
+def chat(prompt: str):
+    """
+    Chat using the AI Gateway.
+    """
+    return _manager.chat(prompt)

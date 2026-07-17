@@ -8,7 +8,7 @@ from backend.app.ai.gemini_service import SYSTEM_PROMPT
 
 BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-MODEL = "deepseek/deepseek-chat-v3-0324:free"
+MODEL = settings.OPENROUTER_MODEL
 
 
 def _request(prompt: str) -> str:
@@ -55,12 +55,18 @@ def _request(prompt: str) -> str:
 
     )
 
-    response.raise_for_status()
+    if not response.ok:
+
+        print("========== OPENROUTER ERROR ==========")
+        print("Status:", response.status_code)
+        print(response.text)
+        print("======================================")
+
+        response.raise_for_status()
 
     data = response.json()
 
     return data["choices"][0]["message"]["content"]
-
 
 def analyze_with_openrouter(
     text: str,
