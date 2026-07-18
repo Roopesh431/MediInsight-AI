@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 from sqlalchemy.orm import Session
@@ -8,6 +9,30 @@ from backend.app.schemas.timeline import (
     TimelineItem,
     TimelineResponse,
 )
+
+
+# Documents in the wild use different date formats depending on the
+# hospital/provider ("02/10/26", "01/22/2026", etc). Try each known format
+# in turn so the timeline sorts chronologically instead of alphabetically.
+_DATE_FORMATS = [
+    "%m/%d/%Y",
+    "%m/%d/%y",
+    "%Y-%m-%d",
+    "%d/%m/%Y",
+]
+
+
+def _parse_date(value: str):
+
+    for fmt in _DATE_FORMATS:
+
+        try:
+            return datetime.strptime(value, fmt)
+
+        except (ValueError, TypeError):
+            continue
+
+    return None
 
 
 def get_timeline(
@@ -106,13 +131,20 @@ def get_timeline(
 
         )
 
-    timeline.sort(
+    def sort_key(item: TimelineItem):
 
-        key=lambda x: x.date,
+        parsed = _parse_date(item.date)
 
-        reverse=True,
+        # Sort dated items first (most recent first); anything unparseable
+        # ("Unknown", bad OCR, etc) sorts to the end instead of corrupting
+        # the chronological order. Using -timestamp keeps a single
+        # ascending sort doing both jobs at once.
+        if parsed is None:
+            return (1, 0)
 
-    )
+        return (0, -parsed.timestamp())
+
+    timeline.sort(key=sort_key)
 
     return TimelineResponse(
 

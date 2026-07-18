@@ -9,7 +9,7 @@ function DocumentToolbar() {
 
         <div className="flex justify-between items-center mb-6">
 
-            <h1 className="text-3xl font-bold">
+            <h1 className="text-3xl font-bold dark:text-white">
 
                 📄 Documents
 

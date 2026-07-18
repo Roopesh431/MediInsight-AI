@@ -11,16 +11,16 @@ function StatusBadge({
         switch (status) {
 
             case "uploaded":
-                return "bg-blue-100 text-blue-700";
+                return "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300";
 
             case "ocr_completed":
-                return "bg-yellow-100 text-yellow-700";
+                return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300";
 
             case "ai_completed":
-                return "bg-green-100 text-green-700";
+                return "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300";
 
             default:
-                return "bg-gray-100 text-gray-700";
+                return "bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-gray-300";
 
         }
 

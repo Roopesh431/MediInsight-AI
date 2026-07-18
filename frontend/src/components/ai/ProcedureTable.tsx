@@ -22,19 +22,19 @@ function ProcedureTable({
 
     return (
 
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border bg-white p-6 shadow-sm overflow-x-auto dark:bg-slate-800 dark:border-slate-700">
 
-            <h2 className="text-xl font-bold mb-5">
+            <h2 className="text-xl font-bold mb-5 dark:text-white">
 
                 📋 Procedures
 
             </h2>
 
-            <table className="w-full">
+            <table className="w-full dark:text-gray-200">
 
                 <thead>
 
-                    <tr className="border-b">
+                    <tr className="border-b dark:border-slate-700">
 
                         <th className="text-left p-2">
 
@@ -74,7 +74,7 @@ function ProcedureTable({
 
                             <tr
                                 key={index}
-                                className="border-b"
+                                className="border-b dark:border-slate-700"
                             >
 
                                 <td className="p-2">

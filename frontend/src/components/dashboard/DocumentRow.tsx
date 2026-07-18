@@ -89,13 +89,13 @@ async function handleAI() {
 
     return (
 
-        <div className="border rounded-xl p-5 bg-white shadow-sm">
+        <div className="border rounded-xl p-5 bg-white shadow-sm dark:bg-slate-800 dark:border-slate-700">
 
             <div className="flex justify-between items-start">
 
                 <div>
 
-                    <h3 className="font-semibold text-lg">
+                    <h3 className="font-semibold text-lg dark:text-white">
 
                         📄 {document.original_filename}
 
@@ -109,7 +109,7 @@ async function handleAI() {
 
                     </div>
 
-                    <p className="text-gray-500">
+                    <p className="text-gray-500 dark:text-gray-400">
 
                         Type:
                         <span className="ml-2">
@@ -171,7 +171,7 @@ async function handleAI() {
                         ? "bg-green-100 text-green-700 cursor-default"
                         : canRunAI
                         ? "bg-green-600 text-white hover:bg-green-700"
-                        : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-slate-700 dark:text-slate-400"
                 }`}
             >
 
@@ -194,7 +194,7 @@ async function handleAI() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
                     canChat
                         ? "bg-purple-600 text-white hover:bg-purple-700"
-                        : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-slate-700 dark:text-slate-400"
                 }`}
             >
 

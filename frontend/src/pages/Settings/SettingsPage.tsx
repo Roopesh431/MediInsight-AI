@@ -1,4 +1,5 @@
 import PageContainer from "../../components/layout/PageContainer";
+import ThemeToggle from "../../components/layout/ThemeToggle";
 
 function SettingsPage() {
 
@@ -9,15 +10,19 @@ function SettingsPage() {
             subtitle="Application information"
         >
 
-            <div className="rounded-xl bg-white p-8 shadow">
+            <div className="rounded-xl bg-white p-6 sm:p-8 shadow dark:bg-slate-800">
 
-                <h2 className="text-2xl font-bold">
+                <div className="flex items-center justify-between flex-wrap gap-4">
 
-                    MediInsight AI v1.0
+                    <h2 className="text-xl sm:text-2xl font-bold dark:text-white">
 
-                </h2>
+                        MediInsight AI v1.1
 
-                <div className="mt-6 space-y-3">
+                    </h2>
+
+                </div>
+
+                <div className="mt-6 space-y-3 dark:text-gray-200">
 
                     <p>
 
@@ -51,16 +56,16 @@ function SettingsPage() {
                         <strong>OCR</strong>
 
                         {" "}
-                        PaddleOCR
+                        Tesseract + Poppler
 
                     </p>
 
                     <p>
 
-                        <strong>AI Model</strong>
+                        <strong>AI Gateway</strong>
 
                         {" "}
-                        Gemini 2.5 Flash
+                        Groq &rarr; Gemini 2.5 Flash &rarr; OpenRouter (automatic failover)
 
                     </p>
 
@@ -69,9 +74,31 @@ function SettingsPage() {
                         <strong>Version</strong>
 
                         {" "}
-                        v1.0.0
+                        v1.1.0
 
                     </p>
+
+                </div>
+
+                <div className="mt-8 border-t pt-6 flex items-center justify-between dark:border-slate-700">
+
+                    <div>
+
+                        <p className="font-medium dark:text-white">
+
+                            Appearance
+
+                        </p>
+
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+
+                            Toggle light or dark mode.
+
+                        </p>
+
+                    </div>
+
+                    <ThemeToggle />
 
                 </div>
 

@@ -65,7 +65,7 @@ function ChatBubble({
                 className={`max-w-[75%] rounded-2xl px-5 py-4 shadow ${
                     isUser
                         ? "bg-blue-600 text-white"
-                        : "border bg-white"
+                        : "border bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-gray-100"
                 }`}
             >
 
@@ -85,7 +85,7 @@ function ChatBubble({
 
                             onClick={copyMessage}
 
-                            className="rounded-md border px-2 py-1 text-xs hover:bg-gray-100 transition"
+                            className="rounded-md border px-2 py-1 text-xs hover:bg-gray-100 transition dark:border-slate-600 dark:hover:bg-slate-700"
 
                             title="Copy response"
 

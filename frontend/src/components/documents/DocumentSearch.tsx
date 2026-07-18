@@ -16,7 +16,7 @@ function DocumentSearch({
     return (
 
         <input
-            className="w-full rounded-xl border p-4 mb-6"
+            className="w-full rounded-xl border p-4 mb-6 dark:bg-slate-800 dark:border-slate-600 dark:text-white dark:placeholder-gray-400"
             placeholder="🔍 Search documents..."
             value={search}
             onChange={(e) =>

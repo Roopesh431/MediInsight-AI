@@ -39,23 +39,23 @@ function TimelineCard({
 
             <div className="flex flex-col items-center">
 
-                <div className="h-5 w-5 rounded-full bg-blue-600 border-4 border-white shadow" />
+                <div className="h-5 w-5 rounded-full bg-blue-600 border-4 border-white shadow dark:border-slate-900" />
 
                 <div className="w-1 flex-1 bg-blue-200" />
 
             </div>
 
-            <div className="flex-1 rounded-2xl border bg-white p-6 shadow-sm hover:shadow-lg transition-all">
+            <div className="flex-1 rounded-2xl border bg-white p-6 shadow-sm hover:shadow-lg transition-all dark:bg-slate-800 dark:border-slate-700">
 
                 <div className="flex justify-between items-center">
 
-                    <h2 className="text-xl font-bold">
+                    <h2 className="text-xl font-bold dark:text-white">
 
                         {item.document_type}
 
                     </h2>
 
-                    <div className="flex items-center gap-2 text-blue-600">
+                    <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
 
                         <FiCalendar />
 
@@ -69,7 +69,7 @@ function TimelineCard({
 
                 </div>
 
-                <div className="mt-4 flex items-center gap-2 text-gray-600">
+                <div className="mt-4 flex items-center gap-2 text-gray-600 dark:text-gray-400">
 
                     <FiFileText />
 
@@ -91,13 +91,13 @@ function TimelineCard({
 
                         <div>
 
-                            <p className="text-xs text-gray-400 uppercase">
+                            <p className="text-xs text-gray-400 uppercase dark:text-gray-500">
 
                                 Hospital
 
                             </p>
 
-                            <p>
+                            <p className="dark:text-gray-200">
 
                                 {item.hospital}
 
@@ -115,13 +115,13 @@ function TimelineCard({
 
                         <div>
 
-                            <p className="text-xs text-gray-400 uppercase">
+                            <p className="text-xs text-gray-400 uppercase dark:text-gray-500">
 
                                 Doctor
 
                             </p>
 
-                            <p>
+                            <p className="dark:text-gray-200">
 
                                 {item.doctor}
 
@@ -133,15 +133,15 @@ function TimelineCard({
 
                 </div>
 
-                <div className="mt-6 rounded-xl bg-slate-50 p-5">
+                <div className="mt-6 rounded-xl bg-slate-50 p-5 dark:bg-slate-900/50">
 
-                    <h3 className="font-semibold mb-2">
+                    <h3 className="font-semibold mb-2 dark:text-white">
 
                         AI Summary
 
                     </h3>
 
-                    <p className="leading-7 text-gray-700">
+                    <p className="leading-7 text-gray-700 dark:text-gray-300">
 
                         {item.summary}
 

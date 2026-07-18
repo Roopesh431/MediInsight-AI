@@ -22,7 +22,7 @@ function RecentDocuments({
 
         return (
 
-            <div className="rounded-2xl border border-dashed bg-white p-16 text-center shadow-sm">
+            <div className="rounded-2xl border border-dashed bg-white p-16 text-center shadow-sm dark:bg-slate-800 dark:border-slate-600">
 
                 <div className="text-7xl">
 
@@ -30,13 +30,13 @@ function RecentDocuments({
 
                 </div>
 
-                <h2 className="mt-6 text-2xl font-bold">
+                <h2 className="mt-6 text-2xl font-bold dark:text-white">
 
                     No Documents Yet
 
                 </h2>
 
-                <p className="mt-3 text-gray-500">
+                <p className="mt-3 text-gray-500 dark:text-gray-400">
 
                     Upload your first medical report to begin AI analysis.
 

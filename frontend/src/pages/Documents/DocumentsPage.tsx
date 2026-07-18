@@ -117,7 +117,7 @@ function DocumentsPage() {
                             e.target.value,
                         )
                     }
-                    className="rounded-xl border bg-white px-4 py-3 shadow-sm"
+                    className="rounded-xl border bg-white px-4 py-3 shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:text-gray-200"
                 >
 
                     <option>All</option>
@@ -131,19 +131,19 @@ function DocumentsPage() {
 
             {/* Summary */}
 
-            <div className="mb-6 rounded-2xl border bg-white p-4 shadow-sm">
+            <div className="mb-6 rounded-2xl border bg-white p-4 shadow-sm dark:bg-slate-800 dark:border-slate-700">
 
                 <div className="flex flex-wrap gap-6">
 
                     <div>
 
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
 
                             Total Documents
 
                         </p>
 
-                        <p className="text-2xl font-bold">
+                        <p className="text-2xl font-bold dark:text-white">
 
                             {documents.length}
 
@@ -153,13 +153,13 @@ function DocumentsPage() {
 
                     <div>
 
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
 
                             Showing
 
                         </p>
 
-                        <p className="text-2xl font-bold">
+                        <p className="text-2xl font-bold dark:text-white">
 
                             {filtered.length}
 
@@ -173,7 +173,7 @@ function DocumentsPage() {
 
             {loading ? (
 
-                <div className="rounded-2xl bg-white border p-12 text-center">
+                <div className="rounded-2xl bg-white border p-12 text-center dark:bg-slate-800 dark:border-slate-700">
 
                     <div className="animate-spin text-5xl">
 
@@ -181,7 +181,7 @@ function DocumentsPage() {
 
                     </div>
 
-                    <p className="mt-5 text-gray-500">
+                    <p className="mt-5 text-gray-500 dark:text-gray-400">
 
                         Loading documents...
 
@@ -195,7 +195,7 @@ function DocumentsPage() {
 
                     {filtered.length === 0 ? (
 
-                        <div className="rounded-xl border border-dashed bg-white p-12 text-center">
+                        <div className="rounded-xl border border-dashed bg-white p-12 text-center dark:bg-slate-800 dark:border-slate-600">
 
                             <div className="text-6xl">
 
@@ -203,13 +203,13 @@ function DocumentsPage() {
 
                             </div>
 
-                            <h2 className="mt-5 text-xl font-bold">
+                            <h2 className="mt-5 text-xl font-bold dark:text-white">
 
                                 No matching documents
 
                             </h2>
 
-                            <p className="mt-2 text-gray-500">
+                            <p className="mt-2 text-gray-500 dark:text-gray-400">
 
                                 Try changing your search or upload a new medical bill.
 

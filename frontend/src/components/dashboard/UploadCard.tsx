@@ -111,19 +111,19 @@ function UploadCard() {
 
     return (
 
-        <div className="rounded-2xl bg-white p-8 shadow">
+        <div className="rounded-2xl bg-white p-8 shadow dark:bg-slate-800">
 
             <div className="flex items-center justify-between">
 
                 <div>
 
-                    <h2 className="text-2xl font-bold">
+                    <h2 className="text-2xl font-bold dark:text-white">
 
                         Upload Medical Document
 
                     </h2>
 
-                    <p className="mt-2 text-gray-500">
+                    <p className="mt-2 text-gray-500 dark:text-gray-400">
 
                         Upload a PDF and let MediInsight AI
                         automatically perform OCR and AI
@@ -141,7 +141,7 @@ function UploadCard() {
                     className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 transition ${
                         loading
                             ? "cursor-not-allowed opacity-70"
-                            : "hover:border-blue-500 hover:bg-blue-50"
+                            : "hover:border-blue-500 hover:bg-blue-50 dark:border-slate-600 dark:hover:bg-slate-700/50"
                     }`}
                 >
 
@@ -151,13 +151,13 @@ function UploadCard() {
 
                     </div>
 
-                    <p className="mt-4 text-lg font-semibold">
+                    <p className="mt-4 text-lg font-semibold dark:text-white">
 
                         Click to upload PDF
 
                     </p>
 
-                    <p className="mt-2 text-sm text-gray-500">
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
 
                         Medical Bills • Reports • Prescriptions
 
@@ -177,15 +177,15 @@ function UploadCard() {
 
             {currentStep !== "idle" && (
 
-                <div className="mt-8 rounded-xl border bg-slate-50 p-6">
+                <div className="mt-8 rounded-xl border bg-slate-50 p-6 dark:bg-slate-900/50 dark:border-slate-700">
 
-                    <h3 className="text-lg font-semibold">
+                    <h3 className="text-lg font-semibold dark:text-white">
 
                         🤖 MediInsight AI Processing
 
                     </h3>
 
-                    <p className="mt-2 text-gray-600">
+                    <p className="mt-2 text-gray-600 dark:text-gray-400">
 
                         {selectedFile}
 

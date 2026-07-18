@@ -36,9 +36,9 @@ function SuggestedQuestions({
 
     return (
 
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border bg-white p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700">
 
-            <h2 className="mb-4 text-xl font-bold">
+            <h2 className="mb-4 text-xl font-bold dark:text-white">
 
                 ❓ Suggested Questions
 
@@ -56,7 +56,7 @@ function SuggestedQuestions({
                         <button
                             key={index}
                             onClick={() => handleClick(question)}
-                            className="rounded-full bg-blue-100 px-4 py-2 text-blue-700 transition hover:bg-blue-200"
+                            className="rounded-full bg-blue-100 px-4 py-2 text-blue-700 transition hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
                         >
 
                             {question}

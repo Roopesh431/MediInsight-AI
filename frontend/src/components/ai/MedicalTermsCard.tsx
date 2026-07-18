@@ -18,9 +18,9 @@ function MedicalTermsCard({
 
     return (
 
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="rounded-xl border bg-white p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700">
 
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="text-xl font-bold mb-4 dark:text-white">
 
                 🩺 Medical Terms
 
@@ -36,13 +36,13 @@ function MedicalTermsCard({
 
                         <div key={index}>
 
-                            <h3 className="font-semibold">
+                            <h3 className="font-semibold dark:text-white">
 
                                 {item.term}
 
                             </h3>
 
-                            <p className="text-gray-600">
+                            <p className="text-gray-600 dark:text-gray-300">
 
                                 {item.meaning}
 
