@@ -20,9 +20,9 @@ function PageContainer({
 
         <div className="max-w-7xl mx-auto">
 
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8">
 
-                <h1 className="text-4xl font-bold">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold dark:text-white">
 
                     {title}
 
@@ -30,7 +30,7 @@ function PageContainer({
 
                 {subtitle && (
 
-                    <p className="mt-2 text-gray-500">
+                    <p className="mt-2 text-sm sm:text-base text-gray-500 dark:text-gray-400">
 
                         {subtitle}
 
@@ -40,7 +40,7 @@ function PageContainer({
 
             </div>
 
-            <div className="bg-white rounded-2xl shadow p-8">
+            <div className="bg-white rounded-2xl shadow p-4 sm:p-6 lg:p-8 dark:bg-slate-800">
 
                 {children}
 

@@ -25,13 +25,13 @@ function DocumentItem({
 
     return (
 
-        <div className="rounded-xl border bg-white shadow p-5">
+        <div className="rounded-xl border bg-white shadow p-5 dark:bg-slate-800 dark:border-slate-700">
 
             <div className="flex justify-between items-start">
 
                 <div>
 
-                    <h2 className="font-semibold text-lg">
+                    <h2 className="font-semibold text-lg dark:text-white">
 
                         📄 {document.original_filename}
 
@@ -45,7 +45,7 @@ function DocumentItem({
 
                     </div>
 
-                    <p className="mt-3 text-gray-600">
+                    <p className="mt-3 text-gray-600 dark:text-gray-400">
 
                         Type:
                         <span className="ml-2 font-medium">

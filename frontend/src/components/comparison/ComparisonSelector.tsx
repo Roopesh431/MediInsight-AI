@@ -54,7 +54,7 @@ function ComparisonSelector({
 
             <div>
 
-                <label className="block mb-2 font-medium">
+                <label className="block mb-2 font-medium dark:text-gray-200">
 
                     First Report
 
@@ -74,7 +74,7 @@ function ComparisonSelector({
 
                     }
 
-                    className="w-full rounded-xl border p-3"
+                    className="w-full rounded-xl border p-3 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
 
                 >
 
@@ -110,7 +110,7 @@ function ComparisonSelector({
 
             <div>
 
-                <label className="block mb-2 font-medium">
+                <label className="block mb-2 font-medium dark:text-gray-200">
 
                     Second Report
 
@@ -130,7 +130,7 @@ function ComparisonSelector({
 
                     }
 
-                    className="w-full rounded-xl border p-3"
+                    className="w-full rounded-xl border p-3 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
 
                 >
 

@@ -38,7 +38,7 @@ function QuickActions() {
                 <Link
                     key={action.title}
                     to={action.to}
-                    className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:bg-slate-800 dark:border-slate-700"
                 >
                     <div
                         className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${action.color}`}
@@ -48,11 +48,11 @@ function QuickActions() {
                         {action.icon}
                     </div>
 
-                    <h2 className="mt-5 text-lg font-bold text-slate-800">
+                    <h2 className="mt-5 text-lg font-bold text-slate-800 dark:text-white">
                         {action.title}
                     </h2>
 
-                    <p className="mt-2 text-sm text-slate-500">
+                    <p className="mt-2 text-sm text-slate-500 dark:text-gray-400">
                         {action.description}
                     </p>
                 </Link>

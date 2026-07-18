@@ -38,7 +38,7 @@ function OCRToolbar({
 
                 placeholder="Search OCR text..."
 
-                className="flex-1 rounded-xl border p-3"
+                className="flex-1 rounded-xl border p-3 dark:bg-slate-800 dark:border-slate-600 dark:text-white dark:placeholder-gray-400"
 
             />
 

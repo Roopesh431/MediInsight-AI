@@ -115,15 +115,15 @@ function AIAnalysisPage() {
                 subtitle="No report available"
             >
 
-                <div className="rounded-xl border border-red-200 bg-red-50 p-6">
+                <div className="rounded-xl border border-red-200 bg-red-50 p-6 dark:bg-red-900/20 dark:border-red-800">
 
-                    <h2 className="font-semibold text-red-700">
+                    <h2 className="font-semibold text-red-700 dark:text-red-300">
 
                         Unable to load AI Report
 
                     </h2>
 
-                    <p className="mt-2 text-gray-600">
+                    <p className="mt-2 text-gray-600 dark:text-gray-400">
 
                         Please run AI Analysis first.
 

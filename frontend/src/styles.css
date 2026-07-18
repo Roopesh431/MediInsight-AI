@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Tailwind v4 defaults to OS-level prefers-color-scheme for `dark:`.
+   This project uses a manual toggle instead, so switch to class-based
+   dark mode: `dark:` classes activate when an ancestor has class="dark" */
+@custom-variant dark (&:where(.dark, .dark *));
+
 html,
 body,
 #root {
@@ -12,4 +17,8 @@ body,
 body {
     background: #f8fafc;
     font-family: Inter, system-ui, sans-serif;
+}
+
+.dark body {
+    background: #0f172a;
 }

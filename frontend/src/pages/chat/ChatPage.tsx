@@ -201,11 +201,11 @@ function ChatPage() {
 
                 </div>
 
-                <div className="flex-1 overflow-y-auto rounded-xl border bg-white p-6 shadow-sm space-y-4">
+                <div className="flex-1 overflow-y-auto rounded-xl border bg-white p-6 shadow-sm space-y-4 dark:bg-slate-800 dark:border-slate-700">
 
                     {messages.length === 0 && (
 
-                        <div className="text-center text-gray-500 mt-20">
+                        <div className="text-center text-gray-500 mt-20 dark:text-gray-400">
 
                             <div className="text-6xl mb-4">
 
@@ -213,7 +213,7 @@ function ChatPage() {
 
                             </div>
 
-                            <h2 className="text-xl font-semibold">
+                            <h2 className="text-xl font-semibold dark:text-white">
 
                                 MediInsight AI
 
@@ -243,7 +243,7 @@ function ChatPage() {
 
                     {loading && (
 
-                        <div className="rounded-xl bg-gray-100 p-4 w-fit">
+                        <div className="rounded-xl bg-gray-100 p-4 w-fit dark:bg-slate-700 dark:text-gray-200">
 
                             🤖 Thinking...
 
@@ -289,7 +289,7 @@ function ChatPage() {
 
                         placeholder="Ask anything about this document..."
 
-                        className="flex-1 rounded-xl border p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 rounded-xl border p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:text-white dark:placeholder-gray-400"
 
                     />
 
@@ -299,7 +299,7 @@ function ChatPage() {
 
                         disabled={loading}
 
-                        className="rounded-xl bg-blue-600 px-8 text-white hover:bg-blue-700 disabled:bg-gray-400"
+                        className="rounded-xl bg-blue-600 px-8 text-white hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-slate-600"
 
                     >
 

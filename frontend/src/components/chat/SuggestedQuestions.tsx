@@ -20,7 +20,7 @@ function SuggestedQuestions({
                 <button
                     key={index}
                     onClick={() => onSelect(question)}
-                    className="rounded-full bg-blue-100 text-blue-700 px-4 py-2 hover:bg-blue-200 transition"
+                    className="rounded-full bg-blue-100 text-blue-700 px-4 py-2 hover:bg-blue-200 transition dark:bg-blue-900/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
                 >
 
                     {question}
