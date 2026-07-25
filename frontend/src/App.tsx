@@ -4,6 +4,10 @@ import {
 } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+
+import LoginPage from "./pages/Login/LoginPage";
+import RegisterPage from "./pages/Register/RegisterPage";
 
 import Dashboard from "./pages/Dashboard/Dashboard";
 import DocumentsPage from "./pages/Documents/DocumentsPage";
@@ -21,55 +25,63 @@ function App() {
 
         <Routes>
 
-            <Route
-                path="/"
-                element={<MainLayout />}
-            >
+            <Route path="/login" element={<LoginPage />} />
+
+            <Route path="/register" element={<RegisterPage />} />
+
+            <Route element={<ProtectedRoute />}>
 
                 <Route
-                    index
-                    element={<Dashboard />}
-                />
+                    path="/"
+                    element={<MainLayout />}
+                >
 
-                <Route
-                    path="documents"
-                    element={<DocumentsPage />}
-                />
+                    <Route
+                        index
+                        element={<Dashboard />}
+                    />
 
-                <Route
-                    path="timeline"
-                    element={<TimelinePage />}
-                />
+                    <Route
+                        path="documents"
+                        element={<DocumentsPage />}
+                    />
 
-                <Route
-                    path="comparison"
-                    element={<ComparisonPage />}
-                />
+                    <Route
+                        path="timeline"
+                        element={<TimelinePage />}
+                    />
 
-                <Route
-                    path="history"
-                    element={<HistoryPage />}
-                />
+                    <Route
+                        path="comparison"
+                        element={<ComparisonPage />}
+                    />
 
-                <Route
-                    path="settings"
-                    element={<SettingsPage />}
-                />
+                    <Route
+                        path="history"
+                        element={<HistoryPage />}
+                    />
 
-                <Route
-                    path="ocr/:documentId"
-                    element={<OCRPage />}
-                />
+                    <Route
+                        path="settings"
+                        element={<SettingsPage />}
+                    />
 
-                <Route
-                    path="ai/:documentId"
-                    element={<AIAnalysisPage />}
-                />
+                    <Route
+                        path="ocr/:documentId"
+                        element={<OCRPage />}
+                    />
 
-                <Route
-                    path="chat/:documentId"
-                    element={<ChatPage />}
-                />
+                    <Route
+                        path="ai/:documentId"
+                        element={<AIAnalysisPage />}
+                    />
+
+                    <Route
+                        path="chat/:documentId"
+                        element={<ChatPage />}
+                    />
+
+                </Route>
 
             </Route>
 

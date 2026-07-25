@@ -117,3 +117,51 @@ export async function getTimeline() {
     return response.data;
 
 }
+
+export interface ReportVersion {
+
+    version_number: number;
+
+    created_at: string;
+
+    is_current: boolean;
+
+}
+
+export async function getVersions(
+    documentId: string,
+): Promise<{ document_id: string; versions: ReportVersion[] }> {
+
+    const response = await api.get(
+        `/documents/${documentId}/versions`,
+    );
+
+    return response.data;
+
+}
+
+export async function getVersionAnalysis(
+    documentId: string,
+    versionNumber: number,
+) {
+
+    const response = await api.get(
+        `/documents/${documentId}/versions/${versionNumber}`,
+    );
+
+    return response.data;
+
+}
+
+export async function restoreVersion(
+    documentId: string,
+    versionNumber: number,
+) {
+
+    const response = await api.post(
+        `/documents/${documentId}/versions/${versionNumber}/restore`,
+    );
+
+    return response.data;
+
+}

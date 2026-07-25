@@ -5,13 +5,21 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from backend.app.database.database import get_db
-from backend.app.database.crud import update_document
+from backend.app.database.crud import get_document, update_document
+from backend.app.database.models import User
+
+from backend.app.api.deps import get_current_user, ensure_document_access
 
 from backend.app.services.document_service import load_document
 from backend.app.services.ocr_service import extract_text_from_pdf
 
 from backend.app.utils.text_storage import save_text
-from backend.app.utils.json_storage import save_analysis
+from backend.app.utils.json_storage import save_analysis_version
+
+from backend.app.database.version_crud import (
+    create_version,
+    get_next_version_number,
+)
 
 from backend.app.ai.ai_interface import analyze_document
 from backend.app.ai.chat_service import chat_with_document
@@ -29,6 +37,7 @@ router = APIRouter(
 def ai_analyze(
     document_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
 
     try:
@@ -44,6 +53,8 @@ def ai_analyze(
             status_code=404,
             detail="Document not found.",
         )
+
+    ensure_document_access(document, current_user)
 
     text = extract_text_from_pdf(
         pdf_path,
@@ -73,9 +84,27 @@ def ai_analyze(
 
     analysis_data = result.model_dump()
 
-    analysis_path = save_analysis(
+    # Every analysis run becomes a new version - re-running AI analysis
+    # (e.g. after switching AI providers, or getting a better OCR pass)
+    # no longer destroys the previous result. document.analysis_json_path
+    # always points at whichever version is "current" (normally the
+    # newest, unless the user explicitly restored an older one).
+    version_number = get_next_version_number(
+        db,
         document.document_id,
+    )
+
+    analysis_path = save_analysis_version(
+        document.document_id,
+        version_number,
         analysis_data,
+    )
+
+    create_version(
+        db,
+        document_id=document.document_id,
+        version_number=version_number,
+        file_path=analysis_path,
     )
 
     updated = update_document(
@@ -99,12 +128,24 @@ def ai_analyze(
 def get_analysis(
     document_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
 
-    document, _ = load_document(
-        document_id,
-        db,
-    )
+    try:
+
+        document, _ = load_document(
+            document_id,
+            db,
+        )
+
+    except ValueError:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found.",
+        )
+
+    ensure_document_access(document, current_user)
 
     if not document.analysis_json_path:
 
@@ -133,7 +174,20 @@ def get_analysis(
 def chat(
     document_id: str,
     request: ChatRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
+
+    document = get_document(db, document_id)
+
+    if document is None:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found.",
+        )
+
+    ensure_document_access(document, current_user)
 
     answer = chat_with_document(
         document_id,

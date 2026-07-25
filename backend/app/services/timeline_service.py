@@ -37,6 +37,7 @@ def _parse_date(value: str):
 
 def get_timeline(
     db: Session,
+    user_id: str,
 ) -> TimelineResponse:
 
     documents = (
@@ -46,6 +47,8 @@ def get_timeline(
         .filter(
 
             Document.analysis_json_path.isnot(None),
+
+            Document.user_id == user_id,
 
         )
 

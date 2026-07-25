@@ -5,17 +5,22 @@ import { Toaster } from "react-hot-toast";
 
 import "./styles.css";
 import App from "./App";
+import { AuthProvider } from "./hooks/useAuth";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
 
-    <App />
+    <AuthProvider>
 
-    <Toaster
-        position="top-right"
-        reverseOrder={false}
-    />
+        <App />
+
+        <Toaster
+            position="top-right"
+            reverseOrder={false}
+        />
+
+    </AuthProvider>
 
 </BrowserRouter>
   </StrictMode>,

@@ -117,6 +117,8 @@ def compare_reports(
 
     db: Session,
 
+    user_id: str,
+
 ) -> ComparisonResponse:
 
     first = (
@@ -152,6 +154,17 @@ def compare_reports(
         raise ValueError(
             "Document not found."
         )
+
+    # Same "documents with no owner are treated as accessible" rule as
+    # ensure_document_access in api/deps.py - covers documents created
+    # before auth was added.
+    for document in (first, second):
+
+        if document.user_id is not None and document.user_id != user_id:
+
+            raise ValueError(
+                "Document not found."
+            )
 
     if not first.analysis_json_path or not second.analysis_json_path:
 
