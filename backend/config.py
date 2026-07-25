@@ -73,5 +73,28 @@ class Settings:
         "",
     )
 
+    # -----------------------------
+    # Authentication
+    # -----------------------------
+
+    # IMPORTANT: override SECRET_KEY in your .env for any real deployment.
+    # This default is only safe for local development.
+    SECRET_KEY = os.getenv(
+        "SECRET_KEY",
+        "dev-only-insecure-secret-change-me",
+    )
+
+    ALGORITHM = os.getenv(
+        "JWT_ALGORITHM",
+        "HS256",
+    )
+
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(
+        os.getenv(
+            "ACCESS_TOKEN_EXPIRE_MINUTES",
+            str(60 * 24 * 7),  # 7 days
+        )
+    )
+
 
 settings = Settings()

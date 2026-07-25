@@ -7,7 +7,7 @@ from backend.app.database.crud import get_document_by_id
 from backend.app.utils.path_utils import get_pdf_path
 from sqlalchemy.orm import Session
 
-def upload_document(file, db):
+def upload_document(file, db, user_id=None):
     """
     Upload a PDF and register it in the database.
     """
@@ -19,6 +19,7 @@ def upload_document(file, db):
         document_id=upload_result.document_id,
         original_filename=upload_result.original_filename,
         saved_filename=upload_result.saved_filename,
+        user_id=user_id,
     )
 
     return upload_result

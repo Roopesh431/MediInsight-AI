@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 
 from backend.app.database.crud import update_document
 from backend.app.database.database import get_db
+from backend.app.database.models import User
+from backend.app.api.deps import get_current_user, ensure_document_access
 from backend.app.schemas.ocr_response import OCRResponse
 from backend.app.services.document_service import load_document
 from backend.app.services.ocr_service import extract_text_from_pdf
@@ -24,6 +26,7 @@ router = APIRouter(
 def process_ocr(
     document_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
 
     try:
@@ -39,6 +42,8 @@ def process_ocr(
             status_code=404,
             detail="Document not found.",
         )
+
+    ensure_document_access(document, current_user)
 
     text = extract_text_from_pdf(
         pdf_path,
@@ -73,12 +78,24 @@ def process_ocr(
 def get_ocr_text(
     document_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
 
-    document, _ = load_document(
-        document_id,
-        db,
-    )
+    try:
+
+        document, _ = load_document(
+            document_id,
+            db,
+        )
+
+    except ValueError:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found.",
+        )
+
+    ensure_document_access(document, current_user)
 
     if not document.ocr_text_path:
 

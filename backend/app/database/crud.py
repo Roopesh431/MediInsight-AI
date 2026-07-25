@@ -12,11 +12,13 @@ def create_document(
     document_id: str,
     original_filename: str,
     saved_filename: str,
+    user_id: str | None = None,
     status: str = "uploaded",
 ):
 
     document = Document(
         document_id=document_id,
+        user_id=user_id,
         original_filename=original_filename,
         saved_filename=saved_filename,
         status=status,
@@ -54,10 +56,16 @@ def get_document(
 
 def get_documents(
     db: Session,
+    user_id: str | None = None,
 ):
 
+    query = db.query(Document)
+
+    if user_id is not None:
+        query = query.filter(Document.user_id == user_id)
+
     return (
-        db.query(Document)
+        query
         .order_by(Document.document_id.desc())
         .all()
     )
