@@ -1,95 +1,79 @@
-# Report Versioning — v1.2
+# Auth validation — password/email hardening
 
-Every AI analysis run now creates a new version instead of silently
-overwriting the last one. Full history browsing and restore, tested at the
-CRUD level, HTTP level (including the cross-user security boundary), and a
-full frontend build.
+## What changed
 
-## ⚠️ The bug this fixes
+**Password can no longer contain your name or email.** Previously the only
+rule was "8+ characters" — `roopesh123` or `Roopesh` itself would pass. Now
+rejected: passwords under 8 characters, passwords with no letter or no
+digit, and passwords containing your email's local part (the bit before
+`@`) or any part of your name (3+ characters, so short name parts like "Jo"
+don't false-positive).
 
-Before this change, `save_analysis()` wrote to a fixed path —
-`backend/analysis/{document_id}.json` — every time. If you ever clicked
-"Re-run Analysis" (or re-triggered `/ai-analyze` for any reason — retrying
-after a bad OCR pass, switching which AI provider answered, etc.), the
-previous result was **gone**, no history, no way back. This wasn't a
-hypothetical edge case, it was guaranteed data loss on the very first
-re-analysis anyone ever ran.
+**Fixed a real login bug while I was in here**: email lookups were
+case-sensitive. Register with `Roopesh@Example.com`, try to log in with
+`roopesh@example.com` (which is what most people would naturally type),
+and login would fail — even though it's the same email address by any
+normal definition. Fixed two ways for defense in depth: (1) both
+`UserCreate` and `UserLogin` now normalize the email to lowercase before
+anything else touches it, and (2) `get_user_by_email` does a
+case-insensitive DB comparison regardless, which also covers any account
+created before this fix.
 
-## What's in this feature
+## Files changed
 
-**Backend (new)**
-- `backend/app/database/version_crud.py` — version number allocation, create/list/get
-- `backend/app/schemas/version.py` — `VersionSummary`, `VersionListResponse`
-- `backend/app/api/version_routes.py` — 3 endpoints:
-  - `GET /documents/{id}/versions` — list all versions, flags which one is current
-  - `GET /documents/{id}/versions/{version_number}` — fetch a specific version's content
-  - `POST /documents/{id}/versions/{version_number}/restore` — make an old version current again
+**Backend**
+- `backend/app/schemas/auth.py` — password complexity rules
+  (`field_validator`), name/email-in-password check (`model_validator`,
+  needs both fields so it can't be a plain field validator), email
+  lowercasing on both `UserCreate` and `UserLogin`
+- `backend/app/database/user_crud.py` — case-insensitive email lookup via
+  `func.lower()`
 
-**Backend (modified)**
-- `models.py` — new `ReportVersion` table (`document_id`, `version_number`, `file_path`, `created_at`)
-- `json_storage.py` — added `save_analysis_version()`, which saves to
-  `{document_id}_v{n}.json` instead of overwriting a single file. The old
-  `save_analysis()` function is still there but no longer called anywhere —
-  left in place rather than deleted in case anything else references it.
-- `ai_routes.py` — `/ai-analyze` now allocates the next version number,
-  saves to a versioned file, records a `ReportVersion` row, and points
-  `document.analysis_json_path` at the new version (making it "current")
-- `routes.py` — registered the new version router
-
-**Frontend (new)**
-- `components/ai/VersionHistory.tsx` — version list with View/Restore per
-  entry, only renders once there's more than one version to show
-
-**Frontend (modified)**
-- `documentService.ts` — `getVersions`, `getVersionAnalysis`, `restoreVersion`
-- `AIAnalysisPage.tsx` — added a "🔄 Re-run Analysis" button (there wasn't
-  one before — the page only ever displayed whatever analysis already
-  existed), a banner when viewing a non-current version, and the version
-  history panel at the bottom
-
-## Design decisions worth knowing about
-
-- **Restoring doesn't delete anything.** It just repoints "current" at an
-  older version's file. All versions stay on disk and in the `versions`
-  list forever, restore or not.
-- **Viewing an old version is read-only** in the sense that "Re-run
-  Analysis" is disabled while you're looking at a historical version (you
-  have to go back to "current" first) — this avoids the confusing case of
-  re-analyzing while looking at someone else's numbers on screen.
-- **No cap on version count.** Every re-analysis adds a file. For a
-  portfolio/demo project this is fine; if this were a real product you'd
-  eventually want either a retention limit or an S3/cold-storage move for
-  old versions, but that's future-scope, not needed now.
+**Frontend**
+- `frontend/src/utils/apiError.ts` (new) — shared helper for parsing
+  FastAPI error responses. Worth knowing why this exists: FastAPI returns
+  errors in two different shapes — a plain string for errors we raise
+  ourselves (`HTTPException(detail="...")`), and an array of
+  `{loc, msg, type}` objects for Pydantic validation failures (422s, which
+  is exactly what the new password rules trigger). The old error handling
+  in both Login and Register only handled the string case, so a validation
+  error would have rendered `[object Object]` in the UI instead of an
+  actual message.
+- `frontend/src/pages/Register/RegisterPage.tsx` — live password checklist
+  that updates as you type (green check / gray X per rule), mirrors the
+  backend rules exactly so you see the same requirements the server will
+  enforce, not a different client-side approximation. The backend is still
+  the actual source of truth; this is just so you're not guessing from a
+  422 error after the fact.
+- `frontend/src/pages/Login/LoginPage.tsx` — switched to the shared error
+  parser (same bug fix, applied for consistency even though login itself
+  doesn't have complex validation to trigger it today)
 
 ## Testing performed
 
-**CRUD level** (real SQLite db) — version numbers allocate correctly in
-sequence (1, 2, 3...), versions list newest-first, fetching a specific
-version returns the right one, fetching a nonexistent version returns
-`None` cleanly.
+**Schema-level** (12 cases) — confirmed all four password rules reject
+correctly (too short, no digit, no letter, contains email, contains either
+name part), confirmed a valid password/email/name combo passes, confirmed
+short name parts (2 chars) don't false-positive, confirmed whitespace-only
+names become `None`, confirmed names get trimmed, confirmed email
+lowercasing works on both schemas.
 
-**HTTP level** (FastAPI `TestClient`, 8 scenarios) — list versions shows
-correct `is_current` flags; fetching a specific version's content returns
-the right data; **a second user gets 404 on both listing and fetching
-versions of a document they don't own** (the security test that actually
-matters); restoring flips `is_current` correctly without deleting the
-other version; the previously-current version is still fully fetchable
-after being displaced; a nonexistent version number returns 404 rather
-than crashing.
+**HTTP-level** (5 scenarios via `TestClient`) — registering with a
+name-in-password correctly returns 422; registering with a mixed-case
+email succeeds and the stored/returned email is lowercase; logging in with
+three different casing variants of the same email all succeed against the
+one registered account.
 
-**Frontend** — `npm run build` (full `tsc -b` + Vite build, not just
-`--noEmit`) caught a real type-narrowing bug in the version-loading
-`useEffect` (TypeScript couldn't prove `viewingVersion` was non-null inside
-a nested async function even after the guard clause) — fixed by capturing
-the narrowed value in a local `const` before the closure. Build is clean
-after the fix.
+**Frontend** — `tsc --noEmit` clean, full `npm run build` succeeds.
 
 ## Try it
 
-1. Upload a document, run AI analysis once
-2. Click "🔄 Re-run Analysis" — a "Report History" section should now
-   appear at the bottom showing 2 versions
-3. Click "View" on version 1 — you should see the older data with an amber
-   "viewing a past version" banner
-4. Click "Restore" on version 1 — it should become the new "Current" one,
-   while version 2 stays in the list, still viewable
+1. Try registering with your name as part of the password (e.g. name
+   "Roopesh", password "Roopesh1234") — should see the checklist mark
+   "Doesn't contain your name" as failed in real time, and the submit
+   button remains usable but the actual submission will show a clear
+   error if you ignore the checklist and submit anyway
+2. Register normally with a valid password, using an email with some
+   uppercase letters, e.g. `YourName@Gmail.com`
+3. Log out, log back in typing the email in all-lowercase — should work
+   despite not matching the casing you registered with

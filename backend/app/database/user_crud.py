@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from backend.app.database.models import User
@@ -9,9 +10,14 @@ def get_user_by_email(
     email: str,
 ) -> User | None:
 
+    # Case-insensitive on purpose, even though the auth schemas already
+    # normalize incoming email to lowercase - this also covers any
+    # account created before that normalization existed, and protects
+    # against anything that calls this function directly without going
+    # through the schema layer.
     return (
         db.query(User)
-        .filter(User.email == email)
+        .filter(func.lower(User.email) == email.lower())
         .first()
     )
 
