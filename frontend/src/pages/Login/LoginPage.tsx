@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 import ThemeToggle from "../../components/layout/ThemeToggle";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 function LoginPage() {
 
@@ -43,9 +44,13 @@ function LoginPage() {
 
         catch (err: any) {
 
-            const message =
-                err?.response?.data?.detail ||
-                "Unable to log in. Check your email and password.";
+            const message = getApiErrorMessage(
+
+                err,
+
+                "Unable to log in. Check your email and password.",
+
+            );
 
             setError(message);
 

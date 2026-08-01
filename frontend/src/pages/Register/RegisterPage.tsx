@@ -1,8 +1,66 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FiCheck, FiX } from "react-icons/fi";
 
 import { useAuth } from "../../hooks/useAuth";
 import ThemeToggle from "../../components/layout/ThemeToggle";
+import { getApiErrorMessage } from "../../utils/apiError";
+
+interface PasswordCheck {
+
+    label: string;
+
+    passed: boolean;
+
+}
+
+// Mirrors backend/app/schemas/auth.py's UserCreate validators exactly -
+// client-side checks are for instant feedback only, the backend is still
+// the real source of truth and re-validates everything independently.
+function getPasswordChecks(
+    password: string,
+    email: string,
+    fullName: string,
+): PasswordCheck[] {
+
+    const passwordLower = password.toLowerCase();
+
+    const emailLocalPart = email.split("@")[0]?.toLowerCase() ?? "";
+
+    const containsEmail =
+        emailLocalPart.length >= 3 &&
+        passwordLower.includes(emailLocalPart);
+
+    const containsName = fullName
+        .split(/\s+/)
+        .filter((part) => part.length >= 3)
+        .some((part) => passwordLower.includes(part.toLowerCase()));
+
+    return [
+
+        {
+            label: "At least 8 characters",
+            passed: password.length >= 8,
+        },
+
+        {
+            label: "Contains a letter and a number",
+            passed: /[A-Za-z]/.test(password) && /\d/.test(password),
+        },
+
+        {
+            label: "Doesn't contain your email address",
+            passed: !containsEmail,
+        },
+
+        {
+            label: "Doesn't contain your name",
+            passed: !containsName,
+        },
+
+    ];
+
+}
 
 function RegisterPage() {
 
@@ -16,9 +74,21 @@ function RegisterPage() {
 
     const [password, setPassword] = useState("");
 
+    const [passwordTouched, setPasswordTouched] = useState(false);
+
     const [error, setError] = useState<string | null>(null);
 
     const [loading, setLoading] = useState(false);
+
+    const passwordChecks = useMemo(
+
+        () => getPasswordChecks(password, email, fullName),
+
+        [password, email, fullName],
+
+    );
+
+    const passwordValid = passwordChecks.every((check) => check.passed);
 
     async function handleSubmit(
         e: React.FormEvent,
@@ -28,9 +98,11 @@ function RegisterPage() {
 
         setError(null);
 
-        if (password.length < 8) {
+        setPasswordTouched(true);
 
-            setError("Password must be at least 8 characters.");
+        if (!passwordValid) {
+
+            setError("Please fix the password requirements below.");
 
             return;
 
@@ -48,9 +120,13 @@ function RegisterPage() {
 
         catch (err: any) {
 
-            const message =
-                err?.response?.data?.detail ||
-                "Unable to create an account. Please try again.";
+            const message = getApiErrorMessage(
+
+                err,
+
+                "Unable to create an account. Please try again.",
+
+            );
 
             setError(message);
 
@@ -154,17 +230,55 @@ function RegisterPage() {
 
                             required
 
-                            minLength={8}
-
                             value={password}
 
                             onChange={(e) => setPassword(e.target.value)}
+
+                            onFocus={() => setPasswordTouched(true)}
 
                             className="w-full rounded-xl border p-3 dark:bg-slate-900 dark:border-slate-600 dark:text-white"
 
                             placeholder="At least 8 characters"
 
                         />
+
+                        {passwordTouched && (
+
+                            <ul className="mt-2 space-y-1">
+
+                                {passwordChecks.map((check) => (
+
+                                    <li
+
+                                        key={check.label}
+
+                                        className={`flex items-center gap-2 text-xs ${
+                                            check.passed
+                                                ? "text-green-600 dark:text-green-400"
+                                                : "text-gray-500 dark:text-gray-400"
+                                        }`}
+
+                                    >
+
+                                        {check.passed ? (
+
+                                            <FiCheck size={14} />
+
+                                        ) : (
+
+                                            <FiX size={14} />
+
+                                        )}
+
+                                        {check.label}
+
+                                    </li>
+
+                                ))}
+
+                            </ul>
+
+                        )}
 
                     </div>
 
