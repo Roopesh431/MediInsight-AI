@@ -5,6 +5,7 @@ import { FiCheck, FiX } from "react-icons/fi";
 import { useAuth } from "../../hooks/useAuth";
 import ThemeToggle from "../../components/layout/ThemeToggle";
 import { getApiErrorMessage } from "../../utils/apiError";
+import logo from "../../assets/webpage.png";
 
 interface PasswordCheck {
 
@@ -152,11 +153,15 @@ function RegisterPage() {
 
             <div className="w-full max-w-md rounded-2xl border bg-white p-8 shadow-sm dark:bg-slate-800 dark:border-slate-700">
 
-                <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                <div className="flex items-center gap-2">
 
-                    🏥 MediInsight AI
+                    <img src={logo} alt="MediInsight AI" className="h-7 w-7 object-contain" />
 
-                </h1>
+                    <h1 className="text-lg sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        MediInsight AI
+                    </h1>
+
+                </div>
 
                 <p className="mt-2 text-gray-500 dark:text-gray-400">
 

@@ -4,6 +4,7 @@ import { FiMenu, FiLogOut } from "react-icons/fi";
 
 import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "../../hooks/useAuth";
+import logo from "../../assets/webpage.png";
 
 interface Props {
 
@@ -66,11 +67,15 @@ function Navbar({ onMenuClick }: Props) {
 
                 </button>
 
-                <h1 className="text-lg sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
+                <div className="flex items-center gap-2">
 
-                    🏥 MediInsight AI
+                    <img src={logo} alt="MediInsight AI" className="h-7 w-7 object-contain" />
 
-                </h1>
+                    <h1 className="text-lg sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        MediInsight AI
+                    </h1>
+
+                </div>
 
             </div>
 
